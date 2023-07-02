@@ -123,7 +123,7 @@ In this command:
 - -d /path/to/racon/output/assembly.polished.fasta is the file path to the polished assembly.
 - -o /path/to/medaka/output specifies the output directory.
 - -t r941_min_high_g360 specifies the model to use for consensus prediction.
-
+```
 
 
 
