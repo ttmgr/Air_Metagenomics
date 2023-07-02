@@ -70,3 +70,21 @@ In this command:
 
 This command runs Flye in 'meta' mode on the input reads, assembles the reads, and writes the assembly result to the specified output directory.
 ```
+
+# 5. Minimap2
+
+```plaintext
+Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA sequences against a large reference database. 
+
+Here's an example of a commonly used command with Minimap2:
+
+```bash
+minimap2 -ax map-ont /path/to/flye/output/assembly.fasta /path/to/nanofilt/output/reads.fastq | samtools sort -o /path/to/minimap2/output/reads.sorted.bam
+
+In this command:
+
+- -ax map-ont tells minimap2 that the input are Oxford Nanopore reads.
+- /path/to/flye/output/assembly.fasta is the file path to the assembled sequences.
+- /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
+- samtools sort -o /path/to/minimap2/output/reads.sorted.bam sorts the output and specifies the output file path.
+```
