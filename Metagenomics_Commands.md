@@ -50,7 +50,23 @@ In this command:
 - gzip > output.fastq.gz compresses the filtered reads and writes them to the output file.
 
 This command decompresses the input FASTQ file, filters the reads based on the specified minimum quality and length, and writes the filtered reads to the output file in compressed format.
+```
 
 
+# Flye
 
+```plaintext
+Flye is a de novo assembler for single-molecule sequencing reads, such as those produced by PacBio and Oxford Nanopore Technologies. It is designed for a wide range of datasets, from small bacterial projects to large mammalian genomes. The Flye assembler provides accurate, fast, and scalable solutions to assembly problems.
 
+In the context of metagenomic projects, Flye can be run in 'meta' mode. Here's an example of a commonly used command with Flye in 'meta' mode:
+
+flye --meta --nano-raw input.fastq --out-dir output_directory 
+
+In this command:
+
+- --meta indicates that Flye should be run in 'meta' mode for metagenomic data.
+- --nano-raw input.fastq specifies the input file containing the reads. Depending on the source of the sequencing data change to nano-hq or nano-corr
+- --out-dir output_directory specifies the directory where the assembly result will be written.
+
+This command runs Flye in 'meta' mode on the input reads, assembles the reads, and writes the assembly result to the specified output directory.
+```
