@@ -108,8 +108,21 @@ In this command:
 - /path/to/racon/output/assembly.polished.fasta specifies the output file path.
 ```
 
+# 7. Medaka
 
+Medaka is a tool to create a consensus sequence from nanopore sequencing data. This tool takes input of basecalled data in fastq format and outputs corrected consensus sequences.
 
+Here's an example of a commonly used command with Medaka:
+
+```bash
+medaka_consensus -i /path/to/nanofilt/output/reads.fastq -d /path/to/racon/output/assembly.polished.fasta -o /path/to/medaka/output -t r941_min_high_g360
+
+In this command:
+
+- -i /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
+- -d /path/to/racon/output/assembly.polished.fasta is the file path to the polished assembly.
+- -o /path/to/medaka/output specifies the output directory.
+- -t r941_min_high_g360 specifies the model to use for consensus prediction.
 
 
 
