@@ -22,8 +22,14 @@ This repository contains a pipeline for the analysis of Oxford Nanopore sequenci
 
 8. **Vamb**: Vamb stands for Variational Autoencoders for Metagenomic Binning. It's a tool that uses deep learning to separate metagenomic contigs into clusters, or 'bins', each representing a different organism or operational taxonomic unit (OTU) in the sample. The input to Vamb is the consensus sequence from Medaka.
 
-9. **Quast**: Quast (QUality ASsessment Tool) evaluates and reports on the quality of genome assemblies. It provides statistics such as the number of contigs, the N50 statistic, GC content, and more. The input to Quast is the binned contigs from Vamb.
+9. **MaxBin2**: MaxBin is an automated binning program to recover individual genomes from metagenomes using an Expectation-Maximization algorithm. This tool groups contigs into individual species based on nucleotide composition and read coverage.
 
-10. **Kraken 2**: This is a system for assigning taxonomic labels to short DNA sequences. It's generally used in metagenomics projects to identify the species present in a sample. The input to Kraken 2 is the binned contigs from Vamb.
+10. **MetaBat2**: MetaBAT is an efficient tool designed to automatically group large genomic fragments assembled from metagenomic shot-gun sequencing. MetaBAT uses a variety of features to group contigs into bins representing individual species.
 
-11. **Prodigal**: Prodigal (PROkaryotic DYnamic programming Gene-finding ALgorithm) is a microbial gene prediction program. It predicts protein-coding genes in the contigs. The input to Prodigal is the binned contigs from Vamb.
+11. **DAS Tool**: DAS Tool is an automated method that integrates the results of a flexible number of binning algorithms to calculate an optimized, non-redundant set of bins from a single assembly. In this pipeline, it takes the binning results from Vamb, MaxBin2, and MetaBat2 to generate a consolidated and optimized set of bins.
+
+12. **Quast**: Quast (QUality ASsessment Tool) evaluates and reports on the quality of genome assemblies. It provides statistics such as the number of contigs, the N50 statistic, GC content, and more. The input to Quast is the binned contigs from Vamb.
+
+13. **Kraken 2**: This is a system for assigning taxonomic labels to short DNA sequences. It's generally used in metagenomics projects to identify the species present in a sample. The input to Kraken 2 is the binned contigs from Vamb.
+
+14. **Prodigal**: Prodigal (PROkaryotic DYnamic programming Gene-finding ALgorithm) is a microbial gene prediction program. It predicts protein-coding genes in the contigs. The input to Prodigal is the binned contigs from Vamb.
