@@ -31,3 +31,26 @@ In this command:
 - -o output.fastq specifies the output file where the trimmed reads will be written.
 
 This command reads the input FASTQ file, trims adapters from the reads, and writes the resulting trimmed reads to the output file.
+```
+
+
+# NanoFilt
+
+```plaintext
+NanoFilt is a simple tool to filter Oxford Nanopore sequencing data. It reads in a FASTQ file (or stdin), filters reads based on a minimum quality and/or a minimum length, and writes out the filtered reads to stdout.
+
+Here's an example of a commonly used command with NanoFilt:
+
+gunzip -c input.fastq.gz | NanoFilt -q 10 -l 500 | gzip > output.fastq.gz
+
+In this command:
+
+- gunzip -c input.fastq.gz is used to decompress the input FASTQ file.
+- NanoFilt -q 10 -l 500 filters reads based on a minimum quality of 10 and a minimum length of 500.
+- gzip > output.fastq.gz compresses the filtered reads and writes them to the output file.
+
+This command decompresses the input FASTQ file, filters the reads based on the specified minimum quality and length, and writes the filtered reads to the output file in compressed format.
+
+
+
+
