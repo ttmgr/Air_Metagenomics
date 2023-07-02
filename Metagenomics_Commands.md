@@ -87,4 +87,6 @@ In this command:
 - /path/to/flye/output/assembly.fasta is the file path to the assembled sequences.
 - /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
 - samtools sort -o /path/to/minimap2/output/reads.sorted.bam sorts the output and specifies the output file path.
+
+This command runs minimap2 and realigns the initial reads to the assemblye assembled by flye.
 ```
