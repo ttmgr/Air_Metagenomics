@@ -125,5 +125,34 @@ In this command:
 - -t r941_min_high_g360 specifies the model to use for consensus prediction.
 ```
 
+# 8. Vamb
+Vamb is a tool for metagenomic binning of assembled contigs. It uses variational autoencoders to cluster contigs into metagenome-assembled genomes (MAGs).
+
+Here's an example of a commonly used command with VAMB:
+
+```bash
+vamb --outdir /path/to/vamb/output --fasta /path/to/flye/output/assembly.fasta --bamfiles /path/to/minimap2/output/reads.sorted.bam
+```
 
 
+# 9. MetaBat2
+
+MetaBat2 is an efficient tool for accurately reconstructing single genomes from complex microbial communities.
+
+Here's an example of a commonly used command with MetaBat2:
+
+```bash
+metabat2 -i /path/to/flye/output/assembly.fasta -a /path/to/vamb/output/depth.txt -o /path/to/metabat2/output
+```
+# 10. MaxBin2
+MaxBin2 is a software for binning metagenomic sequences from single or co-assembled samples.
+
+```bash
+run_MaxBin.pl -contig /path/to/flye/output/assembly.fasta -abund /path/to/vamb/output/depth.txt -out /path/to/maxbin2/output
+```
+# 11. Quast
+QUAST evaluates genome assemblies by computing various metrics, including the number of contigs, the total length of the assembly, the N50 contig size, and more.
+
+```bash
+quast.py /path/to/flye/output/assembly.fasta -o /path/to/quast/output
+```
