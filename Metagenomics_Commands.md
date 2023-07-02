@@ -13,6 +13,7 @@ In this command:
 - --config configuration.cfg is used to specify a configuration file that contains the basecalling model and other settings.
 
 This command will basecall the raw data in the specified input directory using the settings from the configuration file, and write the output to the specified output directory.
+```
 
 
 # 2. Porechop
