@@ -34,7 +34,7 @@ This command reads the input FASTQ file, trims adapters from the reads, and writ
 ```
 
 
-# NanoFilt
+# 3. NanoFilt
 
 ```plaintext
 NanoFilt is a simple tool to filter Oxford Nanopore sequencing data. It reads in a FASTQ file (or stdin), filters reads based on a minimum quality and/or a minimum length, and writes out the filtered reads to stdout.
@@ -53,7 +53,7 @@ This command decompresses the input FASTQ file, filters the reads based on the s
 ```
 
 
-# Flye
+# 4. Flye
 
 ```plaintext
 Flye is a de novo assembler for single-molecule sequencing reads, such as those produced by PacBio and Oxford Nanopore Technologies. It is designed for a wide range of datasets, from small bacterial projects to large mammalian genomes. The Flye assembler provides accurate, fast, and scalable solutions to assembly problems.
