@@ -131,8 +131,6 @@ vamb --outdir /path/to/vamb/output --fasta /path/to/flye/output/assembly.fasta -
 
 In this command:
 
-    -i /path/to/input/reads.fasta specifies the input file containing DNA reads in FASTA format.
-    -o /path/to/output specifies the output directory where the resulting bins will be saved.
 ```
 
 
@@ -148,8 +146,6 @@ In this command:
 
     -i /path/to/input/contigs.fasta specifies the input file containing assembled contigs in FASTA format.
     -o /path/to/output/binning specifies the output directory where the resulting binning information will be saved.
-    -t 4 specifies the number of threads to use during the binning process. Adjust this value according to your system capabilities.
-    -m 1500 sets the minimum contig length threshold. Contigs shorter than this length will be excluded from the binning process.
 ```
 # 10. MaxBin2
 MaxBin2 is a software for binning metagenomic sequences from single or co-assembled samples.
@@ -160,7 +156,6 @@ In this command:
 
     -contig /path/to/input/contigs.fasta specifies the input file containing assembled contigs in FASTA format.
     -out /path/to/output/binning specifies the output directory where the resulting binning information will be saved.
-    -thread 4 specifies the number of threads to use during the binning process
 ```
 
 
