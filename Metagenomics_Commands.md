@@ -46,7 +46,7 @@ gunzip -c input.fastq.gz | NanoFilt -q 10 -l 500 | gzip > output.fastq.gz
 In this command:
 
 - gunzip -c input.fastq.gz is used to decompress the input FASTQ file.
-- NanoFilt -q 10 -l 500 filters reads based on a minimum quality of 10 and a minimum length of 500.
+- NanoFilt -q 9 -l 500 filters reads based on a minimum quality of 9 and a minimum length of 100.
 - gzip > output.fastq.gz compresses the filtered reads and writes them to the output file.
 
 This command decompresses the input FASTQ file, filters the reads based on the specified minimum quality and length, and writes the filtered reads to the output file in compressed format.
