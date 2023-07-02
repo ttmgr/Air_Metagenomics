@@ -1,8 +1,7 @@
 # Guppy Basecaller
 
 ```plaintext
-Guppy Basecaller is a software tool provided by Oxford Nanopore Technologies (ONT) which is used to convert the raw electrical signal data from nanopore sequencing into DNA sequences. This process is known as basecalling.
-
+Guppy Basecaller is a software tool to convert the raw electrical signal data from nanopore sequencing into DNA sequences. 
 Here's an example of a commonly used command with Guppy Basecaller:
 
 guppy_basecaller -i /input/directory -s /output/directory --config configuration.cfg
