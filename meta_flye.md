@@ -1,6 +1,5 @@
-```
-## Assembly
--Flye
+
+## Assembly - flye
 
 Flye is a de novo assembler for long-reads. Flye also produces a polished consensus sequence for the assembly which significantly reduces the error rate.
 
