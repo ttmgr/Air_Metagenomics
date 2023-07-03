@@ -1,4 +1,4 @@
-'''shell
+```
 
 #!/bin/bash
 ### SLURM specific parameters, for e.g:
