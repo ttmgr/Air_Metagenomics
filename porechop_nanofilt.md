@@ -1,11 +1,10 @@
 ```
-
 #!/bin/bash
 ### SLURM specific parameters, for e.g:
 
-#SBATCH --output=/home/haicu/ttreska57/minimap2.log
-#SBATCH -e /home/haicu/ttreska57/minimap2.log
-#SBATCH -J run_minimap2nt
+#SBATCH --output=/home/haicu/ttreska57/porechopnanofilt.log
+#SBATCH -e /home/haicu/ttreska57/porechopnanofilt.log
+#SBATCH -J run_chopandfilt
 #SBATCH -p gpu_p
 #SBATCH -q gpu
 #SBATCH --mem=32G
