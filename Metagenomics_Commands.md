@@ -106,23 +106,8 @@ In this command:
 - /path/to/racon/output/assembly.polished.fasta specifies the output file path.
 ```
 
-# 7. Medaka
-
-Medaka is a tool to create a consensus sequence from nanopore sequencing data. This tool takes input of basecalled data in fastq format and outputs corrected consensus sequences.
-
-Here's an example of a commonly used command with Medaka:
-
-medaka_consensus -i /path/to/nanofilt/output/reads.fastq -d /path/to/racon/output/assembly.polished.fasta -o /path/to/medaka/output -t r941_min_high_g360
-
-In this command:
-
-- -i /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
-- -d /path/to/racon/output/assembly.polished.fasta is the file path to the polished assembly.
-- -o /path/to/medaka/output specifies the output directory.
-- -t r941_min_high_g360 specifies the model to use for consensus prediction.
-```
-
-# 8. Vamb
+# 7. Vamb
+```plaintext
 Vamb is a tool for metagenomic binning of assembled contigs. It uses variational autoencoders to cluster contigs into metagenome-assembled genomes (MAGs).
 
 Here's an example of a commonly used command with VAMB:
@@ -130,12 +115,11 @@ Here's an example of a commonly used command with VAMB:
 vamb --outdir /path/to/vamb/output --fasta /path/to/flye/output/assembly.fasta --bamfiles /path/to/minimap2/output/reads.sorted.bam
 
 In this command:
-
 ```
 
 
-# 9. MetaBat2
-
+# 8. MetaBat2
+```plaintext
 MetaBat2 is an efficient tool for accurately reconstructing single genomes from complex microbial communities.
 
 Here's an example of a commonly used command with MetaBat2:
@@ -147,7 +131,8 @@ In this command:
     -i /path/to/input/contigs.fasta specifies the input file containing assembled contigs in FASTA format.
     -o /path/to/output/binning specifies the output directory where the resulting binning information will be saved.
 ```
-# 10. MaxBin2
+# 9. MaxBin2
+```plaintext
 MaxBin2 is a software for binning metagenomic sequences from single or co-assembled samples.
 
 run_MaxBin.pl -contig /path/to/flye/output/assembly.fasta -abund /path/to/vamb/output/depth.txt -out /path/to/maxbin2/output
@@ -159,7 +144,8 @@ In this command:
 ```
 
 
-# 11. Quast
+# 10. Quast
+```plaintext
 QUAST evaluates genome assemblies by computing various metrics, including the number of contigs, the total length of the assembly, the N50 contig size, and more.
 
 quast.py /path/to/flye/output/assembly.fasta -o /path/to/quast/output
