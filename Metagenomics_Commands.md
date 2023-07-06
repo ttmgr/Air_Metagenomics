@@ -113,40 +113,15 @@ Vamb is a tool for metagenomic binning of assembled contigs. It uses variational
 Here's an example of a commonly used command with VAMB:
 
 vamb --outdir /path/to/vamb/output --fasta /path/to/flye/output/assembly.fasta --bamfiles /path/to/minimap2/output/reads.sorted.bam
-
-In this command:
 ```
 
-
-# 8. MetaBat2
-```plaintext
-MetaBat2 is an efficient tool for accurately reconstructing single genomes from complex microbial communities.
-
-Here's an example of a commonly used command with MetaBat2:
-
-metabat2 -i /path/to/flye/output/assembly.fasta -a /path/to/vamb/output/depth.txt -o /path/to/metabat2/output
-
-In this command:
-
-    -i /path/to/input/contigs.fasta specifies the input file containing assembled contigs in FASTA format.
-    -o /path/to/output/binning specifies the output directory where the resulting binning information will be saved.
-```
-# 9. MaxBin2
-```plaintext
-MaxBin2 is a software for binning metagenomic sequences from single or co-assembled samples.
-
-run_MaxBin.pl -contig /path/to/flye/output/assembly.fasta -abund /path/to/vamb/output/depth.txt -out /path/to/maxbin2/output
-
-In this command:
-
-    -contig /path/to/input/contigs.fasta specifies the input file containing assembled contigs in FASTA format.
-    -out /path/to/output/binning specifies the output directory where the resulting binning information will be saved.
-```
-
-
-# 10. Quast
+# 8. Quast
 ```plaintext
 QUAST evaluates genome assemblies by computing various metrics, including the number of contigs, the total length of the assembly, the N50 contig size, and more.
 
 quast.py /path/to/flye/output/assembly.fasta -o /path/to/quast/output
 ```
+
+# 9. CheckM
+# 10. CoverM
+# 11. Prodigal
