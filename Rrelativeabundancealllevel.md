@@ -31,6 +31,11 @@ all_reports_list <- lapply(files, function(file) {
   return(kraken_report)
 })
 
+# Define the strings to filter
+strings_to_filter <- c("Homo", "Chordata", "Hominidae")
+
+# Filter the dataframes and remove rows with the specified strings in the 'name' column
+all_reports_list <- lapply(all_reports_list, function(df) df[!grepl(paste(strings_to_filter, collapse = "|"), df$name), ])
 
 
 
@@ -48,21 +53,46 @@ filter_and_calculate_abundance <- function(df, rank_code) {
 # Define rank codes for taxonomic levels
 rank_codes <- c("D", "P", "C", "O", "F", "G", "S")
 
-# Use lapply to apply the function to every data frame in our list
-all_reports_list_filtered <- lapply(all_reports_list, function(df) {
-  lapply(rank_codes, function(rank_code) {
-    filter_and_calculate_abundance(df, rank_code)
-  })
-})
+# Initialize an empty list for each rank_code
+filtered_lists <- setNames(replicate(length(rank_codes), list(), simplify = FALSE), rank_codes)
+
+# Loop through each rank_code
+for (rank_code in rank_codes) {
+  # Loop through each report in all_reports_list
+  for (i in seq_along(all_reports_list)) {
+    # Apply filter_and_calculate_abundance function and save the result to the corresponding list
+    filtered_lists[[rank_code]][[i]] <- filter_and_calculate_abundance(all_reports_list[[i]], rank_code)
+  }
+}
+
 
 # Generate a color palette with 24 colors
-my_palette <- c(brewer.pal(8, "Set2"), brewer.pal(12, "Set3"), brewer.pal(9, "Set1") )
+my_palette <- c(brewer.pal(8, "Set2"), brewer.pal(12, "Set3"), brewer.pal(9, "Set1"), brewer.pal(8,"Dark2") )
 
 # Add "Rare" color (gray) at the start of the palette
 my_palette <- c("gray", my_palette)
 
-# Function to perform operations
-perform_operations <- function(reports_list, rank_code, level_name, top_n){
+# Taxonomic level mapping
+taxonomic_level_names <- c("D" = "Domain", "P" = "Phylum", "C" = "Class", "O" = "Order", 
+                           "F" = "Family", "G" = "Genus", "S" = "Species")
+
+
+# Define function to calculate and print median and standard deviation
+calc_stats <- function(df){
+  median_val <- median(df$relative_abundance)
+  sd_val <- sd(df$relative_abundance)
+  
+  cat(paste0('Median of "Rare" group: ', median_val, '\n'))
+  cat(paste0('Standard deviation of "Rare" group: ', sd_val, '\n'))
+}
+
+# Initialize an empty color mapping
+# Initialize an empty color mapping with grey color for 'Rare'
+color_mapping <- list("Rare" = "gray")
+#color_mapping <- list()
+
+# Update the perform_operations function
+perform_operations <- function(reports_list, rank_code, top_n, include_rare = TRUE, x_tick_labels = NULL, plot_title = NULL){  
   
   # Filter dataframes for each taxonomic level
   level_list <- lapply(reports_list, function(df) df[df$rank_code == rank_code,])
@@ -86,25 +116,60 @@ perform_operations <- function(reports_list, rank_code, level_name, top_n){
     ungroup()
   
   # Collect remaining levels for each barcode as 'Rare'
-  rare_level <- level_df %>%
-    anti_join(top_level, by = c("barcode", "name")) %>%
+  if (include_rare) {
+    rare_level <- level_df %>%
+      anti_join(top_level, by = c("barcode", "name")) %>%
+      group_by(barcode) %>%
+      summarise(name = "Rare", relative_abundance = sum(relative_abundance), .groups = "drop")
+    
+    # Bind top levels and rare
+    final_level <- bind_rows(top_level, rare_level)
+  } else {
+    final_level <- top_level
+  }
+  
+  # Recalculate relative abundance for final_level
+  final_level <- final_level %>%
     group_by(barcode) %>%
-    summarise(name = "Rare", relative_abundance = sum(relative_abundance), .groups = "drop")
+    mutate(relative_abundance = relative_abundance / sum(relative_abundance)) %>%
+    ungroup()
   
-  # Bind top levels and rare
-  final_level <- bind_rows(top_level, rare_level)
-  
+  # Calculate and print statistics for "Rare" group
+  if (include_rare) {
+    calc_stats(final_level[final_level$name == "Rare",])
+  }
   # Trim whitespace from names
   final_level$name <- str_trim(final_level$name)
   
   # Ensure "Rare" comes first in the legend
   final_level$name <- factor(final_level$name, levels = c("Rare", unique(final_level$name[final_level$name != "Rare"])))
   
+  # Extract unique names in the current level excluding 'Rare'
+  unique_names <- setdiff(unique(final_level$name), "Rare")
+  
+  # Assign colors to new names
+  new_names <- setdiff(unique_names, names(color_mapping))
+  if (length(new_names) > 0) {
+    available_colors <- setdiff(my_palette, color_mapping)
+    color_mapping[new_names] <- available_colors[seq_along(new_names)]
+  }
+  
+  # Alphabetically sort names for legend (excluding 'Rare')
+  sorted_names <- sort(setdiff(unique(final_level$name), "Rare"))
+  
+  # If 'Rare' should be included, it is added as first element
+  if(include_rare) {
+    sorted_names <- c("Rare", sorted_names)
+  }
+  
+  # Relevel factor levels for ordered legend
+  final_level$name <- factor(final_level$name, levels = sorted_names)
+  
   # Create a stacked bar plot
   plot <- ggplot(final_level, aes(fill = name, y = relative_abundance, x = barcode)) +
     geom_bar(stat = "identity", position = "stack", color = "black") +
-    labs(x = "Barcode", y = "Relative Abundance (%)", fill = level_name) +
-    scale_fill_manual(values = my_palette) +
+    labs(x = "Barcode", y = "Relative Abundance (%)", fill = taxonomic_level_names[rank_code], title = plot_title) +
+    scale_fill_manual(values = color_mapping) +
     scale_y_continuous(labels = scales::percent, expand = c(0, 0)) +
     theme_minimal() +
     theme(
@@ -117,14 +182,13 @@ perform_operations <- function(reports_list, rank_code, level_name, top_n){
       legend.box = "horizontal"
     )
   
+  # If x_tick_labels is not NULL, change the x-axis tick labels
+  if (!is.null(x_tick_labels)) {
+    plot <- plot + scale_x_discrete(labels = x_tick_labels)
+  }
+  
   print(plot)
 }
+# Call the function with the desired parameters
+perform_operations(filtered_lists[["G"]], "G", 16, include_rare = T, x_tick_labels = c("BC01", "BC02", "BC03"), plot_title = "My Plot")
 
-# Apply the function to each taxonomic level
-taxonomic_levels <- c("D", "P", "C", "O", "F", "G", "S")
-level_names <- c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species")
-top_n_values <- c(10, 10, 10, 10, 10, 15, 14)
-
-for (i in 1:length(taxonomic_levels)) {
-  perform_operations(all_reports_list, taxonomic_levels[i], level_names[i], top_n_values[i])
-}
