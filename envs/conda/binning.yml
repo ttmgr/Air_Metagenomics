@@ -1,0 +1,12 @@
+name: binning
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - minimap2
+  - samtools
+  - vamb
+  - ca-certificates
+  - openssl
+  - metabat2

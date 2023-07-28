@@ -1,0 +1,11 @@
+name: concoct
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - concoct
+  - assembly-stats
+  - ca-certificates
+  - certifi
+  - openssl

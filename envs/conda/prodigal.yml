@@ -1,0 +1,13 @@
+name: prodigal
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - prodigal
+  - coverm
+  - eggnog-mapper
+  - ca-certificates
+  - openssl
+  - ncbi-amrfinderplus
+  - certifi

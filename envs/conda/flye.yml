@@ -1,0 +1,18 @@
+name: flye
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.6
+  - minimap2
+  - ca-certificates
+  - certifi
+  - openssl
+  - flye
+  - seqtk
+  - seqkit
+  - duplex-tools
+  - nanopolish
+  - assembly-stats
+  - metabat2

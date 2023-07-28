@@ -1,0 +1,12 @@
+name: qualitycontrol
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - quast
+  - coverm
+  - ca-certificates
+  - certifi
+  - openssl
+  - checkm-genome

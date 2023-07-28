@@ -1,0 +1,11 @@
+name: krakentools
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - krakentools
+  - bracken
+  - ca-certificates
+  - certifi
+  - openssl
