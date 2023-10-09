@@ -188,3 +188,22 @@ CoverM is a tool designed to calculate, normalize and visualize the coverage of 
 
 coverm genome -b /path/to/aligned.bam -r /path/to/assembly.fasta --output-format sparse > /path/to/coverage.tsv
 ```
+# 18. Kraken2
+```plaintext
+Kraken2 is a software tool for assigning taxonomic labels to short DNA sequences. It uses a k-mer based approach for fast and accurate classification.
+Here's an example of a commonly used command with Kraken2:
+
+kraken2 --db kraken_db_finalized --use-names --report report_samplename.txt --output output_samplename.txt sample.fastq --memory-mapping --threads 24
+
+In this command:
+
+    --db /path/to/kraken2/db specifies the path to the Kraken2 database that has been pre-built. The database contains k-mer to taxon mappings.
+
+    -sample.fastq  indicates that the input sequences
+
+    --output kraken2_output.txt specifies the output file where the classification results will be written.
+
+    --memory-mapping stops kraken2 from trying to load the complete database into the memory (wouldnt work without this)
+
+This command will classify the reads in the specified FASTQ files using the Kraken2 database and write the taxonomic labels to the specified output file.
+```
