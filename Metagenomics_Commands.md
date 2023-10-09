@@ -207,3 +207,22 @@ In this command:
 
 This command will classify the reads in the specified FASTQ files using the Kraken2 database and write the taxonomic labels to the specified output file.
 ```
+# 19. Diamond
+```plaintext
+
+
+Example command used with DIAMOND:
+diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames
+
+In this command:
+
+    -d diamond_db specifies the path to the DIAMOND database file, which needs to be pre-built using the diamond makedb command.
+
+    -q sample.fastq specifies the input file containing the DNA query sequences in FASTA format.
+
+    -o sample_name_blastx.dmnd_out specifies the output file where the alignments will be written, typically in BLAST tabular format.
+
+    -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames - this specifies how the output should be structured and which values/metrics it should have 
+
+This command will perform a translated search of the DNA query sequences against the protein database and write the alignment results to the specified output file.
+```
