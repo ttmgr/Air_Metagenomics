@@ -36,5 +36,7 @@ This repository contains a pipeline for the analysis of Oxford Nanopore sequenci
 
 15. **Prodigal**: Prodigal (PROkaryotic DYnamic programming Gene-finding ALgorithm) is a microbial gene prediction program. It predicts protein-coding genes in the contigs. The input to Prodigal is the binned contigs from Vamb.
 
-16. **DIAMOND**:  
+16. **DIAMOND**: Diamond (Double-Index Alignment of Next-Generation Sequencing Data) is a high-performance bioinformatics software for rapid alignment of DNA sequences to protein databases. It is particularly useful for large-scale genomic analysis, such as metagenomic studies. Diamond operates by translating nucleotide queries into protein sequences and aligning them against a protein reference database, offering speeds significantly faster than traditional BLAST. The typical input for Diamond includes short DNA sequences, often from metagenomic or other genomic datasets.
+
+17. **MetaWRAP**: MetaWRAP is a comprehensive pipeline designed for the efficient analysis of metagenomic data. It integrates several bioinformatics tools and workflows to streamline the process of quality control, assembly, binning, and annotation of metagenomic samples. MetaWRAP simplifies the complex task of analyzing metagenomic data, making it more accessible while maintaining high standards of robustness and accuracy. The input for MetaWRAP typically consists of raw sequencing reads from microbial communities, which are then processed through its various modules to yield meaningful insights into the microbial composition and function.
 
