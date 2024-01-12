@@ -18,8 +18,6 @@ This repository contains a pipeline for the analysis of Oxford Nanopore sequenci
 
 6. **Racon**: It is a tool that performs consensus sequencing. It takes as input the raw nanopore reads, and the alignment file produced by Minimap2, and the assembly produced by Flye, and then it generates a consensus sequence that represents an 'improved' version of the initial assembly. This step is also known as 'polishing' the assembly.
 
-7. **Concoct**:
-
 8. **MaxBin2**: MaxBin is an automated binning program to recover individual genomes from metagenomes using an Expectation-Maximization algorithm. This tool groups contigs into individual species based on nucleotide composition and read coverage.
 
 9. **MetaBat2**: MetaBAT is an efficient tool designed to automatically group large genomic fragments assembled from metagenomic shot-gun sequencing. MetaBAT uses a variety of features to group contigs into bins representing individual species.
