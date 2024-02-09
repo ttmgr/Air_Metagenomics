@@ -13,7 +13,6 @@ After setting up Guppy and Dorado, install the remaining tools required for the 
 
 #### Using Mamba
 First, install Mamba in your base Conda environment:
-```bash
 conda install mamba -n base -c conda-forge
 ```
 
