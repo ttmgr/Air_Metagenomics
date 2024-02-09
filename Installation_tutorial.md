@@ -44,7 +44,4 @@ dorado --version
 
 Replace `<other_tool>` with the command to check the version of the other installed tools.
 
-This setup ensures all necessary software for the project is installed and ready for use.
-```
-
-This section of the README provides users with a clear guide to setting up their environment for your project, including the installation of key tools like Guppy and Dorado, as well as other dependencies through Mamba or pip.
+This setup ensures all necessary software for the project is installed and ready uide to setting up their environment for your project, including the installation of key tools like Guppy and Dorado, as well as other dependencies through Mamba or pip.
