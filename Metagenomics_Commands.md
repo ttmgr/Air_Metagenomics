@@ -106,7 +106,7 @@ In this command:
 - /path/to/racon/output/assembly.polished.fasta specifies the output file path.
 ```
 
-# 11. metaWrap
+# 7. metaWrap
 ```plaintext
 MetaWRAP is a modular pipeline for the efficient and robust analysis of metagenomes. It combines several existing tools and workflows for quality control, assembly, binning, annotation, and visualization. MetaWRAP aims to facilitate the process of metagenomic analysis, making it more accessible and interpretable.
 
@@ -144,35 +144,28 @@ In this command:
 This command will refine the input bins from three different sets, using the specified completeness and contamination thresholds, and save the improved bins in the specified output directory.
 ```
 
-# 12. Prodigal
+# 8. Prodigal
 ```plaintext
 Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial (bacterial and archaeal) gene finding program.
 
 prodigal -i /path/to/assembly.fasta -a /path/to/proteins.faa -o /path/to/prodigal_output.gbk -p meta
 ```
 
-# 13. EggNOG-mapper
+# 9. EggNOG-mapper
 ```plaintext
 EggNOG-mapper is a tool for fast functional annotation of novel sequences. It uses precomputed evolutionary models to perform fast orthology assignments.
 
 emapper.py -i /path/to/proteins.faa -o /path/to/eggnog_output -m diamond --cpu 8 --data_dir /path/to/eggnog_data/
 ```
 
-# 16. CheckM
+# 10. CheckM
 ```plaintext
 CheckM provides a set of tools for assessing the quality of genomes recovered from isolates, single cells, or metagenomes. 
 
 checkm lineage_wf /path/to/bins/ /path/to/checkm_output/
 ```
 
-# 17. CoverM
-```plaintext
-CoverM is a tool designed to calculate, normalize and visualize the coverage of microbial genomes. 
-
-coverm genome -b /path/to/aligned.bam -r /path/to/assembly.fasta --output-format sparse > /path/to/coverage.tsv
-```
-
-# 18. Kraken2
+# 11. Kraken2
 ```plaintext
 Kraken2 is a software tool for assigning taxonomic labels to short DNA sequences. It uses a k-mer based approach for fast and accurate classification.
 Here's an example of a commonly used command with Kraken2:
@@ -191,7 +184,7 @@ In this command:
 
 This command will classify the reads in the specified FASTQ files using the Kraken2 database and write the taxonomic labels to the specified output file.
 ```
-# 19. Diamond
+# 12. Diamond
 ```plaintext
 
 
