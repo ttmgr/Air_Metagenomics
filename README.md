@@ -27,6 +27,10 @@ We classify proteins and annotate genes and genomes to understand the biological
 
 By integrating high-frequency nanopore sequencing with detailed bioinformatic analysis, this project aims to enhance our understanding of air microbial compositions.
 
+### KEGG-Pathway Analysis
+
+Prokka > KOBAS
+
 # Air_Metagenomics
 
 ![alt text](Workflow.png)
@@ -66,6 +70,10 @@ This repository contains a pipeline for the analysis of Oxford Nanopore sequenci
 16. **DIAMOND**: Diamond (Double-Index Alignment of Next-Generation Sequencing Data) is a high-performance bioinformatics software for rapid alignment of DNA sequences to protein databases. It is particularly useful for large-scale genomic analysis, such as metagenomic studies. Diamond operates by translating nucleotide queries into protein sequences and aligning them against a protein reference database, offering speeds significantly faster than traditional BLAST. The typical input for Diamond includes short DNA sequences, often from metagenomic or other genomic datasets.
 
 17. **MetaWRAP**: MetaWRAP is a comprehensive pipeline designed for the efficient analysis of metagenomic data. It integrates several bioinformatics tools and workflows to streamline the process of quality control, assembly, binning, and annotation of metagenomic samples. MetaWRAP simplifies the complex task of analyzing metagenomic data, making it more accessible while maintaining high standards of robustness and accuracy. The input for MetaWRAP typically consists of raw sequencing reads from microbial communities, which are then processed through its various modules to yield meaningful insights into the microbial composition and function.
+
+18. **Prokka**: Prokka (Prokaryotic Genome Annotation System) is a comprehensive software tool designed for the rapid annotation of prokaryotic genomes. It is widely used in the microbiology research community for annotating bacterial, archaeal, and viral genomes. Prokka compiles a suite of software tools to predict coding sequences, rRNA genes, tRNA genes, and other features. It also assigns functional annotations to the predicted gene models using a combination of reference databases and heuristic methods. The output of Prokka is a richly annotated genome that can be used for further biological analysis and comparative genomics. Prokka's efficiency and ease of use make it an indispensable tool for microbial genomics studies, providing a comprehensive overview of functional genomics in a matter of hours.
+
+19. **KOBAS**: KOBAS (KEGG Orthology Based Annotation System) is a bioinformatics tool designed for the functional annotation and pathway identification of genome and metagenome projects. It allows researchers to annotate their sequences with KEGG Orthology (KO) terms, predict the metabolic pathways in which these sequences are involved, and identify statistically significant enriched pathways. KOBAS integrates various biological databases, including KEGG, COG (Clusters of Orthologous Groups), GO (Gene Ontology), and OMIM (Online Mendelian Inheritance in Man), to provide a comprehensive view of the functional implications of genomic data. With its ability to process large datasets efficiently, KOBAS is particularly useful in the analysis of complex metagenomic samples, aiding in the discovery of metabolic and genetic pathways relevant to research in microbiology, environmental science, and human health.
 
 
 
