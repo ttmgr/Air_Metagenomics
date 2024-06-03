@@ -186,8 +186,6 @@ This command will classify the reads in the specified FASTQ files using the Krak
 ```
 # 12. Diamond
 ```plaintext
-
-
 Example command used with DIAMOND:
 diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames
 
