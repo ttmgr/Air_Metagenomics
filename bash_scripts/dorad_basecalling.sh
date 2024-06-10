@@ -1,3 +1,4 @@
+```
 #!/bin/bash
 
 # Define the absolute path to the dorado binary
@@ -39,4 +40,4 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Process completed successfully."
-
+```
