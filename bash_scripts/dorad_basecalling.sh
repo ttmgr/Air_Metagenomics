@@ -1,4 +1,3 @@
-```
 #!/bin/bash
 
 # Define the absolute path to the dorado binary
@@ -14,7 +13,7 @@ echo "Running dorado basecaller..."
 # -r: specifies the directory containing the raw data
 # --kit-name: specifies the sequencing kit used
 # --no-trim: disables the trimming of adapter sequences
-${DORADO_BIN} basecaller --emit-fastq ${CONFIG_FILE} -r 20231220_1339_MC-113930_FAU98948_259115e5/ > basecalled.fastq --kit-name SQK-RBK114-24 --no-trim
+${DORADO_BIN} basecaller --emit-fastq ${CONFIG_FILE} -r input_folder/ > basecalled.fastq --kit-name SQK-RBK114-24 --no-trim
 
 # Check if basecalling was successful
 if [ $? -ne 0 ]; then
@@ -40,4 +39,3 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Process completed successfully."
-```
