@@ -27,10 +27,6 @@ We classify proteins and annotate genes and genomes to understand the biological
 
 By integrating high-frequency nanopore sequencing with detailed bioinformatic analysis, this project aims to enhance our understanding of air microbial compositions.
 
-### KEGG-Pathway Analysis
-
-Prokka > KOBAS
-
 
 # Nanopore Sequencing Data Analysis Pipeline
 
