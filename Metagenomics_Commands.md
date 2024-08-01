@@ -1,6 +1,5 @@
 Here's the reformatted version of your markdown content:
 
-```markdown
 # 1. Guppy Basecaller
 
 Guppy Basecaller is a software tool to convert the raw electrical signal data from nanopore sequencing into DNA sequences. 
