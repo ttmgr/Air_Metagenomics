@@ -1,11 +1,11 @@
 # 1. Guppy Basecaller
 
-
 Guppy Basecaller is a software tool to convert the raw electrical signal data from nanopore sequencing into DNA sequences. 
 Here's an example of a commonly used command with Guppy Basecaller:
 
 ```bash
 guppy_basecaller -i /input/directory -s /output/directory --config configuration.cfg
+```
 
 In this command:
 
