@@ -9,9 +9,9 @@ guppy_basecaller -i /input/directory -s /output/directory --config configuration
 
 In this command:
 
-- -i /input/directory specifies the input directory where the raw data files (.fast5 files) are located.
-- -s /output/directory specifies the output directory where the basecalled reads will be written.
-- --config configuration.cfg is used to specify a configuration file that contains the basecalling model and other settings.
+- `-i` /input/directory specifies the input directory where the raw data files (.fast5 files) are located.
+- `-s` /output/directory specifies the output directory where the basecalled reads will be written.
+- `--config` configuration.cfg is used to specify a configuration file that contains the basecalling model and other settings.
 
 This command will basecall the raw data in the specified input directory using the settings from the configuration file, and write the output to the specified output directory.
 
@@ -28,8 +28,8 @@ porechop -i input.fastq -o output.fastq
 
 In this command:
 
-- -i input.fastq specifies the input file (in FASTQ format) that you want to trim adapters from.
-- -o output.fastq specifies the output file where the trimmed reads will be written.
+- `-i` input.fastq specifies the input file (in FASTQ format) that you want to trim adapters from.
+- `-o` output.fastq specifies the output file where the trimmed reads will be written.
 
 This command reads the input FASTQ file, trims adapters from the reads, and writes the resulting trimmed reads to the output file.
 
@@ -46,9 +46,9 @@ gunzip -c input.fastq.gz | NanoFilt -q 9 -l 100 | gzip > output.fastq.gz
 
 In this command:
 
-- gunzip -c input.fastq.gz is used to decompress the input FASTQ file.
-- NanoFilt -q 9 -l 500 filters reads based on a minimum quality of 9 and a minimum length of 100.
-- gzip > output.fastq.gz compresses the filtered reads and writes them to the output file.
+- `gunzip -c input.fastq.gz` is used to decompress the input FASTQ file.
+- `NanoFilt -q 9 -l 500 filters` reads based on a minimum quality of 9 and a minimum length of 100.
+- `gzip > output.fastq.gz` compresses the filtered reads and writes them to the output file.
 
 This command decompresses the input FASTQ file, filters the reads based on the specified minimum quality and length, and writes the filtered reads to the output file in compressed format.
 
@@ -65,9 +65,9 @@ flye --meta --nano-raw input.fastq --out-dir output_directory
 
 In this command:
 
-- --meta indicates that Flye should be run in 'meta' mode for metagenomic data.
-- --nano-raw input.fastq specifies the input file containing the reads. Depending on the source of the sequencing data change to nano-hq or nano-corr
-- --out-dir output_directory specifies the directory where the assembly result will be written.
+- `--meta` indicates that Flye should be run in 'meta' mode for metagenomic data.
+- `--nano-raw` input.fastq specifies the input file containing the reads. Depending on the source of the sequencing data change to nano-hq or nano-corr
+- `--out-dir` output_directory specifies the directory where the assembly result will be written.
 
 This command runs Flye in 'meta' mode on the input reads, assembles the reads, and writes the assembly result to the specified output directory.
 
@@ -84,10 +84,10 @@ minimap2 -ax map-ont /path/to/flye/output/assembly.fasta /path/to/nanofilt/outpu
 
 In this command:
 
-- -ax map-ont tells minimap2 that the input are Oxford Nanopore reads.
-- /path/to/flye/output/assembly.fasta is the file path to the assembled sequences.
-- /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
-- samtools sort -o /path/to/minimap2/output/reads.sorted.bam sorts the output and specifies the output file path.
+- `-ax map-ont` tells minimap2 that the input are Oxford Nanopore reads.
+- `/path/to/flye/output/assembly.fasta` is the file path to the assembled sequences.
+- `/path/to/nanofilt/output/reads.fastq` is the file path to the nanopore reads.
+- `samtools sort -o /path/to/minimap2/output/reads.sorted.bam` sorts the output and specifies the output file path.
 
 This command runs minimap2 and realigns the initial reads to the assemblye assembled by flye.
 
@@ -104,10 +104,10 @@ racon /path/to/nanofilt/output/reads.fastq /path/to/minimap2/output/reads.sam /p
 
 In this command:
 
-- /path/to/nanofilt/output/reads.fastq is the file path to the nanopore reads.
-- /path/to/minimap2/output/reads.sam is the file path to the sorted alignment file.
-- /path/to/flye/output/assembly.fasta is the file path to the assembled sequences.
-- /path/to/racon/output/assembly.polished.fasta specifies the output file path.
+- `/path/to/nanofilt/output/reads.fastq` is the file path to the nanopore reads.
+- `/path/to/minimap2/output/reads.sam` is the file path to the sorted alignment file.
+- `/path/to/flye/output/assembly.fasta` is the file path to the assembled sequences.
+- `/path/to/racon/output/assembly.polished.fasta` specifies the output file path.
 
 
 # 7. metaWrap
@@ -190,10 +190,10 @@ kraken2 --db kraken_db_finalized --use-names --report report_samplename.txt --ou
 
 In this command:
 
-    --db /path/to/kraken2/db specifies the path to the Kraken2 database that has been pre-built. The database contains k-mer to taxon mappings.
-    -sample.fastq  indicates that the input sequences
-    --output kraken2_output.txt specifies the output file where the classification results will be written.
-    --memory-mapping stops kraken2 from trying to load the complete database into the memory (wouldnt work without this)
+    `--db /path/to/kraken2/db` specifies the path to the Kraken2 database that has been pre-built. The database contains k-mer to taxon mappings.
+    - `sample.fastq`  indicates that the input sequences
+    `--output kraken2_output.txt` specifies the output file where the classification results will be written.
+    `--memory-mapping` stops kraken2 from trying to load the complete database into the memory (wouldnt work without this)
 
 This command will classify the reads in the specified FASTQ files using the Kraken2 database and write the taxonomic labels to the specified output file.
 
@@ -208,9 +208,9 @@ diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6
 
 In this command:
 
-    -d diamond_db specifies the path to the DIAMOND database file, which needs to be pre-built using the diamond makedb command.
-    -q sample.fastq specifies the input file containing the DNA query sequences in FASTA format.
-    -o sample_name_blastx.dmnd_out specifies the output file where the alignments will be written, typically in BLAST tabular format.
-    -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames - this specifies how the output should be structured and which values/metrics it should have 
+    `-d diamond_db` specifies the path to the DIAMOND database file, which needs to be pre-built using the diamond makedb command.
+    `-q sample.fastq` specifies the input file containing the DNA query sequences in FASTA format.
+    `-o sample_name_blastx.dmnd_out` specifies the output file where the alignments will be written, typically in BLAST tabular format.
+    `-f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames` - this specifies how the output should be structured and which values/metrics it should have 
 
 This command will perform a translated search of the DNA query sequences against the protein database and write the alignment results to the specified output file.
