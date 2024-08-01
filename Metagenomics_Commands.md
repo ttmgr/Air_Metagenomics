@@ -208,7 +208,7 @@ diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6
 
 In this command:
 
-    `-d diamond_db` specifies the path to the DIAMOND database file, which needs to be pre-built using the diamond makedb command.
+    `-d diamond_db specifies the path to the DIAMOND database file, which needs to be pre-built using the diamond makedb command.
     `-q sample.fastq` specifies the input file containing the DNA query sequences in FASTA format.
     `-o sample_name_blastx.dmnd_out` specifies the output file where the alignments will be written, typically in BLAST tabular format.
     `-f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames` - this specifies how the output should be structured and which values/metrics it should have 
