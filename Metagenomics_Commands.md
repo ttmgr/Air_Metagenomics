@@ -190,7 +190,7 @@ kraken2 --db kraken_db_finalized --use-names --report report_samplename.txt --ou
 
 In this command:
 
-    `--db /path/to/kraken2/db` specifies the path to the Kraken2 database that has been pre-built. The database contains k-mer to taxon mappings.
+    `--db /path/to/kraken2/db specifies the path to the Kraken2 database that has been pre-built. The database contains k-mer to taxon mappings.
     - `sample.fastq`  indicates that the input sequences
     `--output kraken2_output.txt` specifies the output file where the classification results will be written.
     `--memory-mapping` stops kraken2 from trying to load the complete database into the memory (wouldnt work without this)
