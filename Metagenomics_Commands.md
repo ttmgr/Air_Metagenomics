@@ -145,8 +145,7 @@ In this command:
 - `bin_refinement` is the module used for improving the quality of metagenomic bins.
 - `-oHere's the continuation of the reformatted markdown content:
 
-```markdown
-/output/directory` specifies the output directory for the refined bins.
+`/output/directory` specifies the output directory for the refined bins.
 - `-t 16` sets the number of threads to use, which can speed up the processing time.
 - `-A /input/bin_set1`, `-B /input/bin_set2`, and `-C /input/bin_set3` specify the input directories containing the initial bin sets produced by different binning algorithms.
 - `-c 70` and `-x 10` set the minimum completeness and maximum contamination thresholds, respectively, for the refined bins.
