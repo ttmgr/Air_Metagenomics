@@ -77,7 +77,6 @@ Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA seque
 Here's an example of a commonly used command with Minimap2:
 Here's the continuation of the reformatted markdown content:
 
-```markdown
 ```bash
 minimap2 -ax map-ont /path/to/flye/output/assembly.fasta /path/to/nanofilt/output/reads.fastq | samtools sort -o /path/to/minimap2/output/reads.sorted.bam
 ```
