@@ -171,7 +171,3 @@ Note:
 - Replace `/path/to/` with the actual paths on your system.
 - Adjust thread counts and other parameters based on your available computational resources.
 - Refer to the individual tool documentation in the Functionality and Taxonomy directories for more detailed usage instructions and parameter optimization.
-
-For a more detailed walkthrough of the entire pipeline, including input preparation and output interpretation, please refer to our comprehensive user guide [link_to_user_guide].
-
-[Remaining sections stay the same]
