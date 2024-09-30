@@ -115,16 +115,3 @@ PhyloPythiaS+ is a method for the taxonomic classification of long sequencing re
 | How it Works | Uses sample-specific models and hierarchical classifiers for accurate taxonomic assignment |
 | Input | Assembled contigs or long reads |
 | Output | - Taxonomic classifications at various levels<br>- Confidence scores for assignments |
-
-## Considerations for Nanopore Data
-
-When using these tools for nanopore sequencing data, consider the following:
-
-- **Error Rates**: Nanopore data typically has higher error rates. Tools that are more tolerant to sequencing errors (e.g., Centrifuge, Kaiju) may perform better.
-- **Read Length**: Take advantage of the long reads produced by nanopore sequencing. Tools like PhyloPythiaS+ are designed for longer sequences and may provide more accurate classifications.
-- **Real-time Analysis**: Some tools (e.g., Kraken2, Centrifuge) can be used for real-time analysis of nanopore data streams.
-- **Hybrid Approaches**: Consider combining long-read nanopore data with short-read data from other platforms for improved accuracy.
-- **Database Updates**: Ensure that the databases used by these tools are up-to-date and include relevant microbial genomes.
-- **Computational Resources**: Long reads may require more computational resources. Choose tools that can handle the data volume efficiently.
-
-Remember to benchmark different tools on your specific datasets, as performance can vary depending on the complexity of the microbial community and the characteristics of your nanopore sequencing data.
