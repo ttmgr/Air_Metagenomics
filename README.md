@@ -82,7 +82,7 @@ This pipeline is designed for the analysis of metagenomic data from air samples 
 3. **Metagenome Assembly**:
    Assemble the filtered reads into contigs.
    ```
-   flye --nano-raw filtered.fastq --out-dir assembly_output --meta
+   flye --nano-hq filtered.fastq --out-dir assembly_output --meta
    ```
 
 4. **Read Alignment and Assembly Polishing**:
