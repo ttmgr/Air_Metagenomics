@@ -24,6 +24,7 @@ Table of Contents
     Databases Used
     General Workflow
     Considerations for Nanopore Data
+    References
 
 1. DIAMOND
 
@@ -340,42 +341,42 @@ Output:
 
 20. General Workflow
 
-    Preprocessing: Optional error correction of nanopore reads to improve accuracy.
-    Assembly (if applicable): Assemble reads into contigs using assemblers like Canu or Flye.
-    Gene Prediction: Identify genes using tools like Prodigal or MetaGeneMark.
-    Protein Translation: Translate nucleotide sequences into protein sequences.
+    Preprocessing:
+    Optional error correction of nanopore reads to improve accuracy.
+
+    Assembly (if applicable):
+    Assemble reads into contigs using assemblers like Canu or Flye.
+
+    Gene Prediction:
+    Identify genes using tools like Prodigal or MetaGeneMark.
+
+    Protein Translation:
+    Translate nucleotide sequences into protein sequences.
+
     Functional Annotation:
-        Homology Search: Align protein sequences against databases using DIAMOND or BLAST.
-        Domain Identification: Use InterProScan or Pfam Scan to find protein domains.
-        Orthologous Group Mapping: Apply eggNOG-mapper for functional context.
-    Functional Assignment: Assign GO terms, KEGG pathways, and enzyme codes.
-    Data Integration: Combine results from different tools for comprehensive annotation.
-    Visualization: Use MEGAN or other visualization tools to interpret functional profiles.
+        Homology Search:
+        Align protein sequences against databases using DIAMOND or BLAST.
+        Domain Identification:
+        Use InterProScan or Pfam Scan to find protein domains.
+        Orthologous Group Mapping:
+        Apply eggNOG-mapper for functional context.
+
+    Functional Assignment:
+    Assign GO terms, KEGG pathways, and enzyme codes.
+
+    Data Integration:
+    Combine results from different tools for comprehensive annotation.
+
+    Visualization:
+    Use MEGAN or other visualization tools to interpret functional profiles.
 
 21. Considerations for Nanopore Data
 
-    Error Correction: Due to higher error rates, consider using tools like Filtlong or Porechop for quality control.
-    Long-Read Advantages: Longer reads can capture complete genes and operons, improving annotation.
-    Tool Compatibility: Ensure that chosen tools can handle long-read data effectively.
+    Error Correction:
+    Due to higher error rates, consider using tools like Filtlong or Porechop for quality control.
 
-Note: Selection of tools may depend on computational resources, dataset size, and specific research goals. It's common to use multiple tools in combination to enhance the accuracy and depth of functional annotations.
-References
+    Long-Read Advantages:
+    Longer reads can capture complete genes and operons, improving annotation.
 
-    DIAMOND GitHub
-    MEGAN Community Edition
-    eggNOG-mapper
-    InterProScan
-    Prokka GitHub
-    MetaErg GitHub
-    DRAM GitHub
-    MetaGeneMark
-    HUMAnN GitHub
-    KEGG Tools
-    SqueezeMeta GitHub
-    Pfam
-    PANNZER2
-    DeepARG GitHub
-    antiSMASH
-    Kaiju GitHub
-    MG-RAST
-
+    Tool Compatibility:
+    Ensure that chosen tools can handle long-read data effectively.
