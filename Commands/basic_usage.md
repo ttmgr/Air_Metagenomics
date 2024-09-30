@@ -1,4 +1,4 @@
-# Detailed Commands for Air Monitoring Nanopore Sequencing Pipeline
+# Comprehensive Commands for Air Monitoring Nanopore Sequencing Pipeline
 
 This document provides a comprehensive list of commands for each tool used in the Air Monitoring by Nanopore Sequencing pipeline, with detailed explanations of the flags and options used.
 
@@ -15,6 +15,13 @@ This document provides a comprehensive list of commands for each tool used in th
 10. [CheckM](#10-checkm)
 11. [Kraken2](#11-kraken2)
 12. [DIAMOND](#12-diamond)
+13. [ABRicate](#13-abricate)
+14. [NCBI-AMRFinderPlus](#14-ncbi-amrfinderplus)
+15. [PfamScan](#15-pfamscan)
+16. [Prokka](#16-prokka)
+17. [Bakta](#17-bakta)
+18. [NanoStat](#18-nanostat)
+19. [Assembly-Stats](#19-assembly-stats)
 
 ## 1. Guppy Basecaller
 Converts raw electrical signal data from nanopore sequencing into DNA sequences.
@@ -173,4 +180,86 @@ diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6
 - `-f 6`: Sets the output format to tabular
 - The remaining parameters specify the fields to include in the output (e.g., query sequence id, subject sequence id, percentage of identical matches, etc.)
 
-Note: Replace file paths and parameter values as needed for your specific setup and data. Consult each tool's documentation for detailed information on available options and best practices.
+## 13. ABRicate
+ABRicate is a tool for mass screening of contigs for antimicrobial resistance or virulence genes.
+
+```bash
+abricate --db card --minid 80 --mincov 80 --out output_file.tab input_assembly.fasta
+```
+
+- `--db card`: Specifies the database to use (CARD in this case, but could be NCBI, ResFinder, etc.)
+- `--minid 80`: Sets the minimum DNA %identity to report a hit (80% in this case)
+- `--mincov 80`: Sets the minimum DNA %coverage to report a hit (80% in this case)
+- `--out output_file.tab`: Specifies the output file name
+- `input_assembly.fasta`: Specifies the input assembly file
+
+## 14. NCBI-AMRFinderPlus
+AMRFinderPlus identifies antimicrobial resistance genes in protein or nucleotide sequences.
+
+```bash
+amrfinder -n input_assembly.fasta -o amrfinder_output.tsv --plus
+```
+
+- `-n input_assembly.fasta`: Specifies the input nucleotide FASTA file
+- `-o amrfinder_output.tsv`: Specifies the output file name
+- `--plus`: Enables the use of AMRFinderPlus, which includes point mutations
+
+## 15. PfamScan
+PfamScan searches protein sequences against the Pfam database of protein families.
+
+```bash
+pfam_scan.pl -fasta input_proteins.fasta -dir /path/to/pfam/database -outfile pfam_output.txt
+```
+
+- `-fasta input_proteins.fasta`: Specifies the input protein FASTA file
+- `-dir /path/to/pfam/database`: Specifies the directory containing Pfam database files
+- `-outfile pfam_output.txt`: Specifies the output file name
+
+## 16. Prokka
+Prokka is a tool for rapid prokaryotic genome annotation.
+
+```bash
+prokka --outdir prokka_output --prefix sample_name --kingdom Bacteria --locustag SAMPLE input_assembly.fasta
+```
+
+- `--outdir prokka_output`: Specifies the output directory
+- `--prefix sample_name`: Sets the prefix for output files
+- `--kingdom Bacteria`: Specifies the kingdom (could also be Archaea)
+- `--locustag SAMPLE`: Sets the locus tag prefix for CDS features
+- `input_assembly.fasta`: Specifies the input assembly file
+
+## 17. Bakta
+Bakta is a tool for the rapid & standardized annotation of bacterial genomes & plasmids.
+
+```bash
+bakta --db /path/to/bakta/db --output bakta_output --prefix sample_name input_assembly.fasta
+```
+
+- `--db /path/to/bakta/db`: Specifies the path to the Bakta database
+- `--output bakta_output`: Specifies the output directory
+- `--prefix sample_name`: Sets the prefix for output files
+- `input_assembly.fasta`: Specifies the input assembly file
+
+## 18. NanoStat
+NanoStat generates statistics for Oxford Nanopore sequencing data.
+
+```bash
+NanoStat --fastq input_reads.fastq --outdir nanostat_output --name sample_name
+```
+
+- `--fastq input_reads.fastq`: Specifies the input FASTQ file
+- `--outdir nanostat_output`: Specifies the output directory
+- `--name sample_name`: Sets the prefix for the output file
+
+## 19. Assembly-Stats
+Assembly-Stats calculates various statistics for genome assemblies.
+
+```bash
+assembly-stats -t input_assembly.fasta > assembly_stats_output.txt
+```
+
+- `-t`: Enables tab-delimited output
+- `input_assembly.fasta`: Specifies the input assembly file
+- `> assembly_stats_output.txt`: Redirects the output to a file
+
+Note: Replace file paths, database locations, and parameter values as needed for your specific setup and data. Consult each tool's documentation for detailed information on available options and best practices.
