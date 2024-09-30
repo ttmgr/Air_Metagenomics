@@ -1,46 +1,215 @@
-```markdown
-## Installation
+# Installation Guide for Air Monitoring Nanopore Sequencing Pipeline Tools
 
-### Prerequisites
-Ensure you have Python (version 3.6 or later) and Conda installed on your system to manage packages and environments. If not, install Miniconda or Anaconda from their respective websites.
+This guide provides instructions for installing all the tools used in the Air Monitoring Nanopore Sequencing Pipeline. We'll be using Mamba to create separate environments for each tool, ensuring clean and isolated installations.
 
-### Guppy and Dorado
-1. **Guppy**: Download and install Guppy from the Oxford Nanopore Technologies website. Follow the installation instructions provided there.
-2. **Dorado**: Similarly, download Dorado from the Oxford Nanopore Technologies website and follow their installation guide.
+## Prerequisites
 
-### Other Tools via Mamba or Pip
-After setting up Guppy and Dorado, install the remaining tools required for the project. We recommend using Mamba for faster installation of Conda packages, or pip for Python packages not available on Conda.
+- Mamba (a faster alternative to Conda) should be installed on your system. If not, you can install it using:
 
-#### Using Mamba
-First, install Mamba in your base Conda environment:
+```bash
 conda install mamba -n base -c conda-forge
 ```
 
-Then, create a new environment and install required packages:
+## General Installation Process
+
+For each tool, we'll follow these steps:
+1. Create a new Mamba environment
+2. Activate the environment
+3. Install the tool using Mamba
+4. (Optional) Download required databases
+
+## Tool Installation Instructions
+
+### 1. Guppy Basecaller
+
+Guppy is typically provided by Oxford Nanopore Technologies and may require a specific installation process. Please refer to the ONT community for the latest installation instructions.
+
+### 2. Porechop
+
 ```bash
-mamba create -n airseq-env python=3.8
-conda activate airseq-env
-mamba install -c bioconda <package_name>
+mamba create -n porechop -c bioconda porechop
+mamba activate porechop
 ```
 
-Replace `<package_name>` with the names of the bioinformatics tools you need.
+### 3. NanoFilt
 
-#### Using Pip
-For tools or libraries available on PyPI, use pip within the Conda environment:
 ```bash
-pip install <package_name>
+mamba create -n nanofilt -c bioconda nanofilt
+mamba activate nanofilt
 ```
 
-Again, replace `<package_name>` with the actual package names.
+### 4. Flye
 
-### Verification
-After installation, verify that each tool is correctly installed and accessible:
 ```bash
-guppy_basecaller --version
-dorado --version
-<other_tool> --version
+mamba create -n flye -c bioconda flye
+mamba activate flye
 ```
 
-Replace `<other_tool>` with the command to check the version of the other installed tools.
+### 5. Minimap2
 
-This setup ensures all necessary software for the project is installed and ready uide to setting up their environment for your project, including the installation of key tools like Guppy and Dorado, as well as other dependencies through Mamba or pip.
+```bash
+mamba create -n minimap2 -c bioconda minimap2
+mamba activate minimap2
+```
+
+### 6. Racon
+
+```bash
+mamba create -n racon -c bioconda racon
+mamba activate racon
+```
+
+### 7. MetaWRAP
+
+```bash
+mamba create -n metawrap -c ursky metawrap-mg
+mamba activate metawrap
+```
+
+### 8. Prodigal
+
+```bash
+mamba create -n prodigal -c bioconda prodigal
+mamba activate prodigal
+```
+
+### 9. EggNOG-mapper
+
+```bash
+mamba create -n eggnog-mapper -c bioconda eggnog-mapper
+mamba activate eggnog-mapper
+```
+
+Download the EggNOG database:
+```bash
+download_eggnog_data.py
+```
+
+### 10. CheckM
+
+```bash
+mamba create -n checkm -c bioconda checkm-genome
+mamba activate checkm
+```
+
+Download the CheckM database:
+```bash
+checkm data setRoot /path/to/checkm_data
+checkm download_data -t /path/to/checkm_data
+```
+
+### 11. Kraken2
+
+```bash
+mamba create -n kraken2 -c bioconda kraken2
+mamba activate kraken2
+```
+
+Download the Kraken2 database:
+```bash
+kraken2-build --standard --threads 4 --db /path/to/kraken2_db
+```
+
+### 12. DIAMOND
+
+```bash
+mamba create -n diamond -c bioconda diamond
+mamba activate diamond
+```
+
+Download and format the NCBI nr database:
+```bash
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
+gunzip nr.gz
+diamond makedb --in nr -d nr
+```
+
+### 13. ABRicate
+
+```bash
+mamba create -n abricate -c bioconda abricate
+mamba activate abricate
+```
+
+Update the ABRicate databases:
+```bash
+abricate-get_db --setupdb
+```
+
+### 14. NCBI-AMRFinderPlus
+
+```bash
+mamba create -n amrfinder -c bioconda ncbi-amrfinderplus
+mamba activate amrfinder
+```
+
+Update the AMRFinder database:
+```bash
+amrfinder_update --force_update
+```
+
+### 15. PfamScan
+
+```bash
+mamba create -n pfamscan -c bioconda pfam_scan
+mamba activate pfamscan
+```
+
+Download the Pfam database:
+```bash
+wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
+gunzip Pfam-A.hmm.gz
+hmmpress Pfam-A.hmm
+```
+
+### 16. Prokka
+
+```bash
+mamba create -n prokka -c bioconda prokka
+mamba activate prokka
+```
+
+### 17. Bakta
+
+```bash
+mamba create -n bakta -c conda-forge -c bioconda bakta
+mamba activate bakta
+```
+
+Download the Bakta database:
+```bash
+bakta_db download --output /path/to/bakta_db
+```
+
+### 18. NanoStat
+
+```bash
+mamba create -n nanostat -c bioconda nanostat
+mamba activate nanostat
+```
+
+### 19. Assembly-Stats
+
+```bash
+mamba create -n assembly-stats -c bioconda assembly-stats
+mamba activate assembly-stats
+```
+
+## Usage
+
+To use a specific tool, activate its environment before running:
+
+```bash
+mamba activate tool_name
+# Run the tool
+mamba deactivate
+```
+
+Replace `tool_name` with the name of the environment you created for that tool.
+
+## Note
+
+- Always ensure you're using the correct environment for each tool to avoid conflicts.
+- Regularly update your tools and databases to benefit from the latest improvements and data.
+- Some databases are large and may take significant time and storage space to download and process.
+- Adjust the paths in the database download commands according to your system's directory structure.
