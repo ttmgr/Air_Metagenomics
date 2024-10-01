@@ -66,17 +66,3 @@ This document provides a comprehensive overview of the similarities and differen
 ## Conclusion
 
 The choice of AMR and virulence detection tools for metagenomic data depends on the specific requirements of the research project, the nature of the sequencing data, and the available computational resources. While some tools offer rapid screening suitable for large datasets, others provide more detailed and accurate detections at the cost of increased computational time.
-
-For nanopore sequencing data, considerations such as error rates and read length are particularly important. Tools that can handle long reads and are tolerant to higher error rates may be more suitable. Additionally, the ongoing development of tools specifically optimized for long-read technologies is likely to provide more options in the future.
-
-A common strategy is to use a combination of tools, leveraging the strengths of different approaches to obtain a comprehensive and accurate profile of AMR genes and virulence factors in metagenomic samples. This multi-tool approach can be especially beneficial when dealing with complex microbial communities or when high confidence in gene detection is required.
-
-When working with nanopore data for AMR and virulence detection, consider the following:
-
-1. **Error Correction**: Use error correction tools specific to nanopore data before running AMR/virulence detection tools.
-2. **Long Read Advantages**: Leverage the long read lengths to detect complete AMR genes or operons that might be fragmented in short-read data.
-3. **Hybrid Approaches**: Consider combining nanopore data with short-read data for increased accuracy in AMR and virulence detection.
-4. **Real-time Analysis**: For some applications, tools that can process streaming nanopore data in real-time may be advantageous.
-5. **Custom Databases**: Create custom databases or use tools that allow database customization to account for the specific characteristics of nanopore data.
-
-As the field of long-read sequencing continues to evolve, it's likely that more specialized tools for AMR and virulence detection in nanopore data will be developed, further improving our ability to analyze these important aspects of microbial communities.
