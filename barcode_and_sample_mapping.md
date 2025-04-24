@@ -1,4 +1,4 @@
-## Sample Information and Barcode Mapping
+## Sample Information and Barcode Mapping (ENA: PRJEB76446)
 
 This project analyzed air samples collected from various locations using Oxford Nanopore Technologies (ONT) sequencing. Samples were prepared and barcoded using the ONT Rapid Barcoding Kit (likely SQK-RBK114-24 based on filenames), allowing for multiplexed sequencing on a single flow cell.
 
