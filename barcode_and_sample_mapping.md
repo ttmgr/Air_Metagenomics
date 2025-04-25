@@ -53,20 +53,20 @@ These blank samples correspond to the different locations and replicate collecti
 
 All blank sample files are distributed together within a single compressed TAR archive named `blanks_urbanstudy_fastq.tar.gz`. Users downloading this archive will need to unpack it (`tar -xzvf blanks_urbanstudy_fastq.tar.gz`) to access the individual blank sample files listed below.
 
-| Sample name                  | Location             | Sampling Date | File Name (within archive)                                    | Barcode   |
-| :--------------------------- | :------------------- | :------------ | :------------------------------------------------------------ | :-------- |
-| CityCenter_Blank_Rep1        | City center Blank    | 19/10/2023    | `2024 SQK-RBK114-24_citycenter_blank_1_barcode04.fastq.tar.gz` | barcode04 |
-| CityCenter_Blank_Rep2        | City center Blank    | 31/10/2023    | `2024 SQK-RBK114-24_citycenter_blank_2_barcode05.fastq.tar.gz` | barcode05 |
-| CityCenter_Blank_Rep3        | City center Blank    | 03/11/2023    | `2024 SQK-RBK114-24_citycenter_blank_3_barcode06.fastq.tar.gz` | barcode06 |
-| Greenbelt_Blank_Rep1         | Green belt Blank     | 18/10/2023    | `2024 SQK-RBK114-24_greenbelt_blank_1_barcode07.fastq.tar.gz`  | barcode07 |
-| Greenbelt_Blank_Rep2         | Green belt Blank     | 30/10/2023    | `2024 SQK-RBK114-24_greenbelt_blank_2_barcode08.fastq.tar.gz`  | barcode08 |
-| Greenbelt_Blank_Rep3         | Green belt Blank     | 03/11/2023    | `2024 SQK-RBK114-24_greenbelt_blank_3_barcode09.fastq.tar.gz`  | barcode09 |
-| Outerbelt_Blank_Rep1         | Outer belt Blank     | 17/10/2023    | `2024 SQK-RBK114-24_outerbelt_blank_1_barcode13.fastq.tar.gz`  | barcode13 |
-| Outerbelt_Blank_Rep2         | Outer belt Blank     | 20/10/2023    | `2024 SQK-RBK114-24_outerbelt_blank_2_barcode14.fastq.tar.gz`  | barcode14 |
-| Outerbelt_Blank_Rep3         | Outer belt Blank     | 02/11/2023    | `2024 SQK-RBK114-24_outerbelt_blank_3_barcode15.fastq.tar.gz`  | barcode15 |
-| ResidentialArea_Blank_Rep1   | Residential Blank    | 17/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_1_barcode01.fastq.tar.gz`| barcode01 |
-| ResidentialArea_Blank_Rep2   | Residential Blank    | 19/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_2_barcode02.fastq.tar.gz`| barcode02 |
-| ResidentialArea_Blank_Rep3   | Residential Blank    | 30/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_3_barcode03.fastq.tar.gz`| barcode03 |
-| UrbanBeach_Blank_Rep1        | Urban beach Blank    | 18/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_1_barcode10.fastq.tar.gz` | barcode10 |
-| UrbanBeach_Blank_Rep2        | Urban beach Blank    | 20/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_2_barcode11.fastq.tar.gz` | barcode11 |
-| UrbanBeach_Blank_Rep3        | Urban beach Blank    | 31/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_3_barcode12.fastq.tar.gz` | barcode12 |
+| Sample name                  | Location             | Sampling Date | File Name (within archive)                                | Barcode   |
+| :--------------------------- | :------------------- | :------------ | :-------------------------------------------------------- | :-------- |
+| CityCenter_Blank_Rep1        | City center Blank    | 19/10/2023    | `2024 SQK-RBK114-24_citycenter_blank_1_barcode04.fastq`     | barcode04 |
+| CityCenter_Blank_Rep2        | City center Blank    | 31/10/2023    | `2024 SQK-RBK114-24_citycenter_blank_2_barcode05.fastq`     | barcode05 |
+| CityCenter_Blank_Rep3        | City center Blank    | 03/11/2023    | `2024 SQK-RBK114-24_citycenter_blank_3_barcode06.fastq`     | barcode06 |
+| Greenbelt_Blank_Rep1         | Green belt Blank     | 18/10/2023    | `2024 SQK-RBK114-24_greenbelt_blank_1_barcode07.fastq`      | barcode07 |
+| Greenbelt_Blank_Rep2         | Green belt Blank     | 30/10/2023    | `2024 SQK-RBK114-24_greenbelt_blank_2_barcode08.fastq`      | barcode08 |
+| Greenbelt_Blank_Rep3         | Green belt Blank     | 03/11/2023    | `2024 SQK-RBK114-24_greenbelt_blank_3_barcode09.fastq`      | barcode09 |
+| Outerbelt_Blank_Rep1         | Outer belt Blank     | 17/10/2023    | `2024 SQK-RBK114-24_outerbelt_blank_1_barcode13.fastq`      | barcode13 |
+| Outerbelt_Blank_Rep2         | Outer belt Blank     | 20/10/2023    | `2024 SQK-RBK114-24_outerbelt_blank_2_barcode14.fastq`      | barcode14 |
+| Outerbelt_Blank_Rep3         | Outer belt Blank     | 02/11/2023    | `2024 SQK-RBK114-24_outerbelt_blank_3_barcode15.fastq`      | barcode15 |
+| ResidentialArea_Blank_Rep1   | Residential Blank    | 17/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_1_barcode01.fastq`| barcode01 |
+| ResidentialArea_Blank_Rep2   | Residential Blank    | 19/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_2_barcode02.fastq`| barcode02 |
+| ResidentialArea_Blank_Rep3   | Residential Blank    | 30/10/2023    | `2024 SQK-RBK114-24_residentialarea_blank_3_barcode03.fastq`| barcode03 |
+| UrbanBeach_Blank_Rep1        | Urban beach Blank    | 18/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_1_barcode10.fastq`     | barcode10 |
+| UrbanBeach_Blank_Rep2        | Urban beach Blank    | 20/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_2_barcode11.fastq`     | barcode11 |
+| UrbanBeach_Blank_Rep3        | Urban beach Blank    | 31/10/2023    | `2024 SQK-RBK114-24_urbanbeach_blank_3_barcode12.fastq`     | barcode12 |
