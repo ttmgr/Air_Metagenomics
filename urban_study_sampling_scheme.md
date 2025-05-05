@@ -12,7 +12,7 @@ This document first describes how to access and process the raw `.pod5` files to
 The raw sequencing signal data is available as `.pod5` files. These files are typically large and are split into multiple parts, grouped by the sequencing run.
 
 **Important:**
-* A single sequencing run often contains multiplexed samples from different replicates or even locations. For example, the `greenbelt` run files also contain the data for `urbanbeach` samples.
+* A single sequencing run contains multiplexed samples from different replicates or even locations. For example, the `greenbelt` run files also contain the data for `urbanbeach` samples.
 * You need to download **all parts** associated with a specific sequencing run (e.g., `outer_belt_part*.tar.gz`, `greenbelt_1_part*.tar.gz`, `greenbelt_2_part*.tar.gz`, etc., assuming these archives contain the POD5 files or the POD5 files follow a similar naming pattern) to reconstruct the complete dataset for that run.
 
 **Processing Steps using Dorado:**
