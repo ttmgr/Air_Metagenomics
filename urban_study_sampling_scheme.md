@@ -9,7 +9,7 @@ This document first describes how to access and process the raw `.pod5` files to
 
 ## Raw POD5 Data and Basecalling Instructions
 
-The raw sequencing signal data is available as `.pod5` files. These files are typically large and may be split into multiple parts, grouped by the sequencing run. Based on the ENA submission structure (see image `grafik.png`), runs seem to be associated with locations like `outer_belt`, `gracia_eixample`, and `greenbelt`.
+The raw sequencing signal data is available as `.pod5` files. These files are typically large and are split into multiple parts, grouped by the sequencing run.
 
 **Important:**
 * A single sequencing run often contains multiplexed samples from different replicates or even locations. For example, the `greenbelt` run files also contain the data for `urbanbeach` samples.
