@@ -2,7 +2,7 @@
 
 This project analyzed air samples collected from various locations using Oxford Nanopore Technologies (ONT) sequencing. Two forms of data are available:
 
-1.  **Raw Signal Data:** Unprocessed `.pod5` (pod5.tar.gz) files from the sequencing runs, grouped by run/location.
+1.  **Raw Signal Data:** Unprocessed `.pod5` (`.tar.gz` filename ending) files from the sequencing runs, grouped by run/location.
 2.  **Processed Sequence Data:** Basecalled and demultiplexed FASTQ files (`.fastq.tar.gz`), submitted to the European Nucleotide Archive (ENA) under accession PRJEB76446.
 
 This document first describes how to access and process the raw `.pod5` files to generate FASTQ data. Subsequently, it provides the mapping between the resulting FASTQ files (or the pre-generated ENA files) and the corresponding sample information.
