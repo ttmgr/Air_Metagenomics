@@ -18,7 +18,7 @@ The raw sequencing signal data is available as `.pod5` files. These files are ty
 **Processing Steps using Dorado:**
 
 1.  **Download & Prepare:** Download all parts for the sequencing run of interest. If they are archived (e.g., in `.tar.gz` files), extract them. Ensure all `.pod5` files for the run are in a single directory.
-2.  **Basecalling:** Use ONT's Dorado basecaller to convert the raw signal data in the `.pod5` files into sequence reads (FASTQ format). Use the `--emit-fastq` flag to output FASTQ directly and `--no-trim` to skip adapter trimming at this stage. You will need to select an appropriate basecalling model matching the sequencing kit and flowcell version used (e.g., a model compatible with Kit 114 chemistry like `dna_r10.4.1_e8.2_400bps_sup@v4.2.0`).
+2.  **Basecalling:** Use ONT's Dorado basecaller to convert the raw signal data in the `.pod5` files into sequence reads (FASTQ format). Use the `--emit-fastq` flag to output FASTQ directly and `--no-trim` to skip adapter trimming at this stage. You will need to select an appropriate basecalling model matching the sequencing kit and flowcell version used (e.g., a model compatible with Kit 114 chemistry like `dna_r10.4.1_e8.2_400bps_hac@v4.2.0`).
     ```bash
     # Example Dorado basecalling command (adjust model and paths)
     # Outputs a single, un-trimmed FASTQ file containing all reads
