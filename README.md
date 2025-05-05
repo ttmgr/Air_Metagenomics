@@ -4,6 +4,7 @@
 
 This project utilizes metagenomic analysis of bioaerosols collected via air sampling to monitor microbial communities, employing Oxford Nanopore Technologies (ONT) sequencing. The repository contains a workflow designed to process raw sequencing data, assemble metagenomes, perform binning, and conduct taxonomic and functional analysis.
 
+## ENA Files: https://www.ebi.ac.uk/ena/browser/view/PRJEB76446 
 ---
 
 **❗ Important First Step ❗**
