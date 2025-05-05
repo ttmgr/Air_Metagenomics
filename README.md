@@ -85,11 +85,11 @@ This section outlines the commands for processing **one sample** (i.e., one demu
 
 1.  **Read Processing:**
     * Trim adapters (if not done during basecalling/demux).
-    * Filter by quality (e.g., Q10) and length (e.g., min 1000 bp).
+    * Filter by quality (e.g., Q8) and length (e.g., min 100 bp).
     ```bash
     # Input: sample_X.fastq
     porechop -i sample_X.fastq -o sample_X.trimmed.fastq
-    NanoFilt -q 10 -l 1000 < sample_X.trimmed.fastq > sample_X.filtered.fastq
+    NanoFilt -q 8 -l 100 < sample_X.trimmed.fastq > sample_X.filtered.fastq
     # Output: sample_X.filtered.fastq
     ```
 
