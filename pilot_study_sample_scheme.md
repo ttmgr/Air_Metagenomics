@@ -1,4 +1,4 @@
-# Greenhouse vs. Natural Environment Air Sample Analysis (PRJEBXXXXX)
+# Greenhouse vs. Natural Environment Air Sample Analysis (PRJEB76446)
 
 This project analyzed air samples collected from a controlled Greenhouse environment and a nearby Natural Environment using Oxford Nanopore Technologies (ONT) sequencing. Samples were collected at different time points for each environment.
 
