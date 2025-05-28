@@ -1,214 +1,233 @@
-# Wetland Metagenomics & Viromics by Nanopore Sequencing (PRJEBXXXXX)
+# Air Monitoring by Nanopore Sequencing (PRJEB76446)
 
 ## Project Overview
 
-This project utilizes metagenomic (DNA) and viromic (RNA) analysis of environmental water and air samples to characterize microbial communities, antimicrobial resistance (AMR) genes, and Avian Influenza Viruses (AIV), employing Oxford Nanopore Technologies (ONT) sequencing[cite: 36]. This repository contains workflows designed to process raw sequencing data for these analyses.
+This project utilizes metagenomic analysis of bioaerosols collected via air sampling to monitor microbial communities, employing Oxford Nanopore Technologies (ONT) sequencing. The repository contains a workflow designed to process raw sequencing data, assemble metagenomes, perform binning, and conduct taxonomic and functional analysis.
 
-## ENA Files: [https://www.ebi.ac.uk/ena/browser/view/PRJEBXXXXX](https://www.ebi.ac.uk/ena/browser/view/PRJEBXXXXX) ---
+## ENA Files: https://www.ebi.ac.uk/ena/browser/view/PRJEB76446 
+---
 
 **❗ Important First Step ❗**
 
-Before using the general pipelines described below, you **must** consult the specific data guides. These guides contain critical information about:
+Before using the general pipeline described below, you **must** consult the specific data guides for the dataset you are analyzing. These guides contain critical information about:
 
-* **Data Access:** Where to find the raw (POD5) and/or processed (FASTQ) data.
-* **Sample Mapping & Barcoding:** Which barcode corresponds to which sample for different sequencing runs (DNA shotgun, AIV). Details on library prep (e.g., RBK114-24 for DNA[cite: 78], SQK-RBK114.24 for AIV [cite: 108]) and pooling strategies[cite: 79, 80, 81, 82].
-* **Basecalling/Demultiplexing:** Specific Dorado commands and configurations used for the initial conversion of raw POD5 data to FASTQ files, including required demultiplexing based on barcodes[cite: 83, 109].
+* **Data Access:** Where to find the raw (FAST5/POD5) and/or processed (FASTQ) data.
+* **Sample Mapping:** Which barcode corresponds to which sample.
+* **Basecalling/Demultiplexing:** Specific commands and configurations used for the initial conversion of raw data to FASTQ, including required demultiplexing based on barcodes.
+* **Preprocessing:** Any necessary steps like concatenating paired FASTQ files for certain samples.
 
 **Find the essential guides here:**
 
-* **DNA Shotgun Data Guide:** [`dna_shotgun_data_guide.md`](./dna_shotgun_data_guide.md)
-    * Describes samples for DNA metagenomic analysis (active water, passive water, air)[cite: 117].
-    * Uses **POD5** data format and **Dorado** (v5.0.0, model dna_r10.4.1_e8.2_400bps_sup@v5.0.0) for basecalling/demultiplexing[cite: 83].
-* **AIV (RNA) Data Guide:** [`aiv_rna_data_guide.md`](./aiv_rna_data_guide.md)
-    * Describes samples positive for AIV and processed for RNA sequencing[cite: 104].
-    * Uses **POD5** data format and **Dorado** for basecalling/demultiplexing (primers and adapters removed by Dorado)[cite: 109].
+* **Greenhouse vs. Natural Environment Study (Pilot Study):** [`pilot_study_guide.md`](https://github.com/ttmgr/Air_Metagenomics/blob/main/pilot_study_guide.md)
+    * Describes samples from Greenhouse and Natural environments with different collection times.
+    * Uses **FAST5** data format and **Guppy** for basecalling/demultiplexing.
+    * Requires **concatenation** of FASTQ pairs for Natural Environment samples.
+* **Urban Air Study:** [`urban_study_sample_guide.md`](https://github.com/ttmgr/Air_Metagenomics/blob/main/urban_study_sample_guide.md)
+    * Describes samples collected from various urban locations (City Center, Greenbelt, etc.).
+    * Uses **POD5** data format and **Dorado** for basecalling/demultiplexing.
 
-**The pipelines described below assume you have already completed the necessary steps from the relevant guide and have demultiplexed FASTQ files ready for analysis.**
+**The pipeline described below assumes you have already completed the necessary steps from the relevant guide and have demultiplexed, preprocessed FASTQ files ready for analysis (one file or concatenated file per sample).**
 
 ---
 
 ## Analysis Pipeline Overview
 
-This repository outlines two main analysis pipelines:
+This pipeline processes individual FASTQ sample files through several key bioinformatics stages:
 
-1.  **DNA Shotgun Metagenomics:** Processes FASTQ files from environmental DNA samples.
-    * Read Processing: Adapter trimming and quality/length filtering[cite: 84, 85].
-    * Taxonomic Classification: Assigning taxonomy to reads[cite: 88].
-    * Metagenome Assembly: Assembling reads into contigs using two different assemblers[cite: 91, 92].
-    * Assembly Polishing: Improving assembly accuracy[cite: 91, 92].
-    * AMR Gene Detection: Identifying antimicrobial resistance genes from reads and contigs[cite: 95, 96, 98].
-    * Taxonomic Origin of AMR: Determining the host of AMR genes on contigs[cite: 99, 100, 101, 102].
-2.  **AIV (RNA) Analysis:** Processes FASTQ files from samples amplified for AIV[cite: 104].
-    * Read Processing: Quality and length filtering[cite: 110].
-    * Alignment: Aligning reads to AIV reference genomes[cite: 111, 112].
-    * Consensus Sequence Generation: Creating a consensus AIV genome for each sample[cite: 116].
+1.  **Read Processing:** Adapter trimming and quality/length filtering.
+2.  **Metagenome Assembly:** Assembling reads into contiguous sequences (contigs).
+3.  **Assembly Polishing:** Improving assembly accuracy using raw reads.
+4.  **Metagenome Binning:** Grouping contigs into putative genome bins (MAGs).
+5.  **Quality Control (QC):** Assessing the completeness and contamination of bins.
+6.  **Taxonomic Classification:** Identifying the microbial composition of reads and/or bins.
+7.  **Gene Prediction & Functional Annotation:** Finding genes and predicting their functions.
+8.  **Antimicrobial Resistance (AMR) Gene Detection:** Screening for AMR genes.
+9.  **Statistics Generation:** Calculating metrics for reads and assemblies.
 
 ## Tools Used
 
-This project integrates the following key bioinformatics tools:
+This pipeline integrates the following key bioinformatics tools:
 
-* **Dorado:** Basecaller for ONT data (v5.0.0 for DNA[cite: 83], specified version for AIV [cite: 109]).
-* **Porechop:** Adapter and barcode trimming (v0.2.4)[cite: 84].
-* **NanoFilt:** Quality and length filtering for ONT reads (v2.8.0)[cite: 85].
-* **Filtlong:** Quality and length filtering for AIV reads[cite: 110].
-* **Kraken2:** K-mer based taxonomic classification (v2.1.2)[cite: 88, 94, 101].
-* **metaFlye:** Long-read assembler for metagenomes (v2.9.6)[cite: 91].
-* **nanoMDBG:** Long-read assembler for metagenomes (v1.1)[cite: 92].
-* **Minimap2:** Long-read alignment (v2.28 for polishing DNA assemblies[cite: 91], v2.26 for AIV alignment [cite: 111]).
-* **Racon:** Consensus correction/polishing for assemblies (v1.5)[cite: 91].
-* **Medaka:** Consensus correction/polishing for assemblies (v2.0.1)[cite: 92].
-* **AMRFinderPlus:** Detection of AMR genes (v3.12.8)[cite: 95].
-* **DIAMOND:** Protein sequence alignment for taxonomic assignment of AMR-carrying contigs[cite: 101].
-* **Seqkit:** Toolkit for FASTA/Q sequence manipulation (v2.10.0)[cite: 86, 96, 97].
-* **SAMtools:** Utilities for SAM/BAM alignment files (v1.17)[cite: 113].
-* **BCFtools:** Utilities for variant calling and consensus generation (v1.17)[cite: 116].
-* **(Python Libraries for PCoA):** scikit-bio v0.6.3, Matplotlib v3.10.0, Pandas v2.2.3, NumPy v1.26.4[cite: 90].
+1.  **Guppy / Dorado:** Basecallers (ONT) - *Initial processing covered in linked guides.*
+2.  **Porechop:** Adapter trimming for ONT reads.
+3.  **NanoFilt:** Quality and length filtering for ONT reads.
+4.  **Flye:** Long-read assembler (meta-assembly mode).
+5.  **Minimap2:** Long-read alignment.
+6.  **Racon:** Consensus correction/polishing for assemblies.
+7.  **MetaWRAP:** Meta-pipeline for binning (using MetaBAT2, MaxBin2, CONCOCT) and refinement.
+8.  **CheckM:** Assesses the quality (completeness, contamination) of MAGs.
+9.  **Kraken 2:** K-mer based taxonomic classification.
+10. **Prodigal:** Gene prediction for prokaryotic genomes.
+11. **DIAMOND:** High-throughput protein sequence alignment (BLASTp equivalent).
+12. **Prokka / Bakta:** Prokaryotic genome annotation pipelines.
+13. **Seqkit:** Toolkit for FASTA/Q sequence manipulation and statistics.
+14. **AMRFinderPlus / ABRicate:** Tools for detecting acquired AMR genes.
+15. **eggNOG-mapper:** Functional annotation based on orthologous groups.
+16. **NanoStat:** Generates statistics for Nanopore sequencing data.
+17. **Assembly-stats:** Calculates basic assembly metrics.
 
 ## Repository Structure
 
-* `dna_shotgun_data_guide.md`: Essential guide for accessing and preprocessing DNA shotgun data.
-* `aiv_rna_data_guide.md`: Essential guide for accessing and preprocessing AIV (RNA) data.
-* `Installation_tutorial.md`: Step-by-step guide for installing all required tools and databases.
-* `/scripts` (example directory): May contain helper scripts or detailed command sequences.
+-   `/Functionality`: Contains detailed information about functional annotation tools (e.g., DIAMOND, eggNOG-mapper). *(Consider adding details here)*
+-   `/Taxonomy`: Provides explanations and usage guides for taxonomic classification tools (e.g., Kraken 2). *(Consider adding details here)*
+-   `Installation_tutorial.md`: Step-by-step guide for installing all required tools and databases.
+-   `urban_study_sample_guide.md`: Essential guide for accessing and preprocessing the Urban Air study data.
+-   `pilot_study_guide.md`: Essential guide for accessing and preprocessing the Greenhouse/Natural Environment study data.
 
 ## Installation
 
-For comprehensive installation instructions for all pipeline tools and required databases, please refer to the [`Installation_tutorial.md`](./Installation_tutorial.md) file.
+For comprehensive installation instructions for all pipeline tools and required databases, please refer to the [`Installation_tutorial.md`](Installation_tutorial.md) file.
 
-## Usage Workflow
+## Usage Workflow (General Pipeline)
 
-This section outlines the commands for processing samples. You will typically need to run these steps for each sample, potentially using loops or a workflow manager.
+This section outlines the commands for processing **one sample** (i.e., one demultiplexed FASTQ file obtained via the steps in the linked guides). You will typically need to run these steps for each sample, potentially using loops or a workflow manager.
 
-### DNA Shotgun Metagenomics Workflow
+**Input:** A single FASTQ file per sample (e.g., `sample_X.fastq`). Remember Natural Environment samples require concatenation first (see `pilot_study_guide.md`).
 
-**Input:** Demultiplexed FASTQ files per sample (e.g., `sample_X.fastq`), obtained via steps in `dna_shotgun_data_guide.md`.
-
-1.  **Read Processing (Adapters, Barcodes, Quality/Length):**
-    * Dorado (during basecalling) demultiplexes based on barcodes[cite: 83].
-    * Porechop removes sequencing adapters and barcodes[cite: 84].
-    * NanoFilt filters reads by length (minimum 100 bp)[cite: 85].
+1.  **Read Processing:**
+    * Trim adapters (if not done during basecalling/demux).
+    * Filter by quality (e.g., Q8) and length (e.g., min 100 bp).
     ```bash
-    # Input: sample_X_raw.fastq (example name post-demux)
-    porechop -i sample_X_raw.fastq -o sample_X.trimmed.fastq # [cite: 84]
-    NanoFilt --length 100 sample_X.trimmed.fastq > sample_X.filtered.fastq # [cite: 85]
+    # Input: sample_X.fastq
+    porechop -i sample_X.fastq -o sample_X.trimmed.fastq
+    NanoFilt -q 8 -l 100 < sample_X.trimmed.fastq > sample_X.filtered.fastq
     # Output: sample_X.filtered.fastq
     ```
 
-2.  **Taxonomic Classification (Reads):**
-    * Classify filtered reads using Kraken2[cite: 88]. (Downsample for PCoA as per methods [cite: 86]).
+2.  **Metagenome Assembly:**
+    * Assemble the filtered reads using Flye in meta mode.
     ```bash
     # Input: sample_X.filtered.fastq
-    # For PCoA: First downsample to 14,000 reads (if sample has more) [cite: 86]
-    # seqkit sample -n 14000 sample_X.filtered.fastq -o sample_X.14k.fastq # [cite: 86]
-    # KRAKEN_DB_PATH=/path/to/nt_core_database_May2025
-    kraken2 --db $KRAKEN_DB_PATH --threads <N> --output sample_X.kraken_output.txt --report sample_X.kraken_report.txt sample_X.filtered.fastq # Or sample_X.14k.fastq for PCoA set [cite: 88]
+    flye --nano-hq sample_X.filtered.fastq --out-dir sample_X_assembly --meta --threads 16
+    # Output: sample_X_assembly/assembly.fasta
+    ```
+
+3.  **Assembly Polishing (Optional but Recommended):**
+    * Align filtered reads back to the assembly.
+    * Use Racon for polishing (can be run multiple rounds).
+    ```bash
+    # Input: sample_X_assembly/assembly.fasta, sample_X.filtered.fastq
+    minimap2 -ax map-ont sample_X_assembly/assembly.fasta sample_X.filtered.fastq | samtools sort -@ 8 -o sample_X.aligned.bam
+    samtools index sample_X.aligned.bam
+    racon -t 16 sample_X.filtered.fastq sample_X.aligned.bam sample_X_assembly/assembly.fasta > sample_X.polished.fasta
+    # Output: sample_X.polished.fasta (Repeat alignment and racon for more rounds if desired)
+    ```
+    *(Note: Subsequent steps use the polished assembly if available, otherwise use `sample_X_assembly/assembly.fasta`)*
+
+4.  **Metagenome Binning:**
+    * Use MetaWRAP's binning module with multiple binners.
+    ```bash
+    # Input: sample_X.polished.fasta (or assembly.fasta), sample_X.filtered.fastq
+    ASSEMBLY_FA=sample_X.polished.fasta # Or sample_X_assembly/assembly.fasta
+    FILTERED_FQ=sample_X.filtered.fastq
+    metawrap binning -o sample_X_BINNING -t 16 -a $ASSEMBLY_FA --metabat2 --maxbin2 --concoct $FILTERED_FQ
+    # Output: Bins in sample_X_BINNING/metabat2_bins/, maxbin2_bins/, concoct_bins/
+    ```
+
+5.  **Bin Consolidation & Refinement (MetaWRAP):**
+    * Combine results from different binners and refine bins based on CheckM scores (e.g., Completeness > 70%, Contamination < 10%).
+    ```bash
+    # Input: Bins from previous step
+    metawrap bin_refinement -o sample_X_BIN_REFINEMENT -t 16 -A sample_X_BINNING/metabat2_bins/ -B sample_X_BINNING/maxbin2_bins/ -C sample_X_BINNING/concoct_bins/ -c 70 -x 10
+    # Output: Refined bins in sample_X_BIN_REFINEMENT/metawrap_70_10_bins/
+    ```
+
+6.  **Bin Quality Control:**
+    * Assess the quality of the final, refined bins using CheckM.
+    ```bash
+    # Input: Refined bins
+    REFINED_BINS_DIR=sample_X_BIN_REFINEMENT/metawrap_70_10_bins
+    checkm lineage_wf -t 16 -x fasta $REFINED_BINS_DIR ./sample_X_checkm_output
+    # Output: Quality report in sample_X_checkm_output/
+    ```
+
+7.  **Taxonomic Classification (Reads):**
+    * Classify the processed reads using Kraken 2.
+    ```bash
+    # Input: sample_X.filtered.fastq
+    kraken2 --db /path/to/kraken_db --threads 16 --output sample_X.kraken_output.txt --report sample_X.kraken_report.txt sample_X.filtered.fastq
     # Output: sample_X.kraken_output.txt, sample_X.kraken_report.txt
     ```
+    *(Note: You can also run Kraken 2 on the assembled contigs or individual bins if needed)*
 
-3.  **Metagenome Assembly & Polishing:**
-    * Option A: metaFlye + Racon polishing [cite: 91]
-        ```bash
-        # Input: sample_X.filtered.fastq
-        flye --nano-raw sample_X.filtered.fastq --out-dir sample_X_metaflye_assembly --meta --threads <N> # [cite: 91]
-        # Polishing with Racon (example: 3 rounds) [cite: 91]
-        ASSEMBLY_FA=sample_X_metaflye_assembly/assembly.fasta
-        POLISHED_FA_RAC=$ASSEMBLY_FA
-        for i in {1..3}; do
-          # PDF uses Minimap2 then Racon [cite: 91]
-          minimap2 -ax map-ont $POLISHED_FA_RAC sample_X.filtered.fastq | samtools sort -@ <N> -o sample_X.aligned_for_racon.bam #
-          samtools index sample_X.aligned_for_racon.bam #
-          racon -t <N> sample_X.filtered.fastq sample_X.aligned_for_racon.bam $POLISHED_FA_RAC > sample_X.racon_round${i}.fasta # [cite: 91]
-          POLISHED_FA_RAC=sample_X.racon_round${i}.fasta
-        done
-        # Final metaFlye polished assembly: $POLISHED_FA_RAC (e.g., sample_X.racon_round3.fasta)
-        # Further polish with Medaka v2.0.1 (Applied to both assemblers in paper) [cite: 92]
-        # medaka_consensus -i sample_X.filtered.fastq -d $POLISHED_FA_RAC -o sample_X_metaflye_medaka_polished -t <N> -m <model_appropriate_for_r10.4.1> # [cite: 92]
-        # Output: sample_X_metaflye_medaka_polished/consensus.fasta
-        ```
-    * Option B: nanoMDBG + Medaka polishing [cite: 92]
-        ```bash
-        # Input: sample_X.filtered.fastq
-        # nanoMDBG v1.1 command (refer to tool's documentation for specific parameters) [cite: 92]
-        # nanomdbg --reads sample_X.filtered.fastq --out sample_X_nanomdbg_assembly # (placeholder command)
-        # ASSEMBLY_FA_NMDBG=sample_X_nanomdbg_assembly/contigs.fasta (example output)
-        # Polish with Medaka v2.0.1 [cite: 92]
-        # medaka_consensus -i sample_X.filtered.fastq -d $ASSEMBLY_FA_NMDBG -o sample_X_nanomdbg_medaka_polished -t <N> -m <model_appropriate_for_r10.4.1> # [cite: 92]
-        # Output: sample_X_nanomdbg_medaka_polished/consensus.fasta (Chosen for AMR analysis in paper [cite: 139])
-        ```
-
-4.  **AMR Gene Detection:**
-    * On downsampled reads and nanoMDBG contigs[cite: 96, 98].
+8.  **Gene Prediction (Assembly/Bins):**
+    * Predict protein-coding genes on the assembly or high-quality bins.
     ```bash
-    # Input: sample_X.filtered.fastq, sample_X_nanomdbg_medaka_polished/consensus.fasta
-    # On reads (downsample first based on sample type: 87k for Passive Water, 93k for Active Water, 14k for Air) [cite: 96]
-    # seqkit sample -n <read_count_threshold> sample_X.filtered.fastq > sample_X.downsampled.fastq # [cite: 96]
-    # seqkit fq2fa sample_X.downsampled.fastq -o sample_X.downsampled.fasta # [cite: 97]
-    AMRFINDER_DB_PATH=/path/to/amrfinder_db
-    amrfinder -n sample_X.downsampled.fasta -o sample_X.amr_reads.txt --threads <N> --plus --database $AMRFINDER_DB_PATH # [cite: 95, 98]
-
-    # On nanoMDBG contigs
-    CONTIGS_FA=sample_X_nanomdbg_medaka_polished/consensus.fasta
-    amrfinder -n $CONTIGS_FA -o sample_X.amr_contigs.txt --threads <N> --plus --database $AMRFINDER_DB_PATH # [cite: 95, 98]
-    # Output: sample_X.amr_reads.txt, sample_X.amr_contigs.txt
+    # Input: sample_X.polished.fasta (or individual bin .fa files)
+    ASSEMBLY_FA=sample_X.polished.fasta
+    prodigal -i $ASSEMBLY_FA -a sample_X.proteins.faa -d sample_X.genes.fna -o sample_X.genes.gff -p meta
+    # Output: sample_X.proteins.faa, sample_X.genes.fna, sample_X.genes.gff
     ```
 
-5.  **Taxonomic Origin of AMR on Contigs:**
-    * Use DIAMOND and Kraken2 on contigs with AMR genes[cite: 99, 100, 101]. An AMR gene was assigned to a specific species only if both DIAMOND and Kraken2 showed the same species-level classification[cite: 102].
+9.  **Protein Alignment (Functional Annotation):**
+    * Align predicted proteins against a reference database (e.g., NCBI nr) using DIAMOND for initial functional hints.
     ```bash
-    # Input: Contigs identified by AMRFinderPlus as having AMR genes (e.g., from sample_X.amr_contigs.txt) [cite: 100]
-    # For each contig (CONTIG_WITH_AMR.fa):
-    # DIAMOND_DB_PATH=/path/to/nr_database_May2025
-    # KRAKEN_DB_PATH=/path/to/nt_core_database_May2025
-    # diamond blastx -d $DIAMOND_DB_PATH -q CONTIG_WITH_AMR.fa -o contig.diamond.txt --threads <N> --outfmt 6 # [cite: 101]
-    # kraken2 --db $KRAKEN_DB_PATH --threads <N> --output contig.kraken.txt CONTIG_WITH_AMR.fa # [cite: 101]
-    # Assign species if both DIAMOND and Kraken2 agree [cite: 102]
+    # Input: sample_X.proteins.faa
+    diamond blastp --db /path/to/nr_database.dmnd --query sample_X.proteins.faa --out sample_X.diamond_output.txt --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore --evalue 1e-5 --threads 16 --sensitive
+    # Output: sample_X.diamond_output.txt
     ```
 
-### AIV (RNA) Analysis Workflow
-
-**Input:** Demultiplexed FASTQ files per sample (e.g., `aiv_sample_Y.fastq`), obtained via steps in `aiv_rna_data_guide.md`. Dorado removed primers/adapters[cite: 109].
-
-1.  **Read Processing (Quality/Length Filtering):**
-    * Filter reads using Filtlong (minimum Phred score >8, min length >150 bp)[cite: 110].
+10. **Genome Annotation (Assembly/Bins):**
+    * Annotate the assembly or bins using Prokka or Bakta (Bakta often preferred for MAGs).
     ```bash
-    # Input: aiv_sample_Y.fastq
-    filtlong --min_mean_q 9 --min_length 150 aiv_sample_Y.fastq > aiv_sample_Y.filtered.fastq # PDF states ">8", commonly Q9 [cite: 110]
-    # Output: aiv_sample_Y.filtered.fastq
+    # Input: sample_X.polished.fasta (or individual bin .fa files)
+    ASSEMBLY_FA=sample_X.polished.fasta
+    # Using Prokka (Example)
+    prokka --outdir sample_X_prokka_output --prefix sample_X --cpus 16 $ASSEMBLY_FA
+    # Using Bakta (Example - replace --db path)
+    # bakta --db /path/to/bakta_db --output sample_X_bakta_output --threads 16 $ASSEMBLY_FA
+    # Output: Annotation files in respective output directories
     ```
 
-2.  **Alignment to Reference Genomes:**
-    * Align filtered reads to AIV reference database (all AIV nucleotide sequences from Europe as of 04/03/2023) using Minimap2 (v2.26) with -ax map-ont setting[cite: 111, 112].
+11. **Sequence Manipulation (Example):**
+    * Use Seqkit for various operations, e.g., getting stats or filtering.
     ```bash
-    # Input: aiv_sample_Y.filtered.fastq
-    AIV_REF_DB_PATH=/path/to/aiv_segment_references_europe_04032023.fasta
-    minimap2 -ax map-ont $AIV_REF_DB_PATH aiv_sample_Y.filtered.fastq > aiv_sample_Y.aligned.sam # [cite: 111]
-    # Output: aiv_sample_Y.aligned.sam
+    # Input: sample_X.filtered.fastq
+    seqkit stats sample_X.filtered.fastq >> all_samples_filtered_stats.txt
+    # Filter sequences longer than 5kbp
+    # seqkit seq -m 5000 sample_X.filtered.fastq > sample_X.filtered_5k.fastq
     ```
 
-3.  **Consensus Sequence Generation:**
-    * Convert SAM to BAM, sort, and index using SAMtools (v1.17)[cite: 113].
-    * Select best reference for each segment using `samtools idxstats` to find the reference to which most reads mapped across every segment[cite: 113, 114].
-    * Map all reads to the best reference for each of the eight segments[cite: 115].
-    * Generate consensus using BCFtools (v1.17)[cite: 116].
+12. **AMR Gene Detection:**
+    * Screen the assembly or bins for antimicrobial resistance genes using ABRicate and/or AMRFinderPlus.
     ```bash
-    # Input: aiv_sample_Y.aligned.sam (or aiv_sample_Y.filtered.fastq if re-mapping to best refs)
-    samtools view -bS aiv_sample_Y.aligned.sam | samtools sort -o aiv_sample_Y.sorted.bam # [cite: 113]
-    samtools index aiv_sample_Y.sorted.bam # [cite: 113]
+    # Input: sample_X.polished.fasta (or individual bin .fa files)
+    ASSEMBLY_FA=sample_X.polished.fasta
+    # Using ABRicate (Example with CARD db)
+    abricate --db card --threads 16 $ASSEMBLY_FA > sample_X.abricate_card.txt
+    # Using AMRFinderPlus (Example for contigs)
+    amrfinder -n $ASSEMBLY_FA -o sample_X.amrfinder.txt --threads 16
+    # Output: AMR gene reports
+    ```
 
-    # For each of the 8 AIV segments (example for one chosen best_ref_segment.fa):
-    # minimap2 -ax map-ont best_ref_chosen_segment.fa aiv_sample_Y.filtered.fastq | samtools sort -@ <N> -o aiv_sample_Y.segment_aligned.bam # [cite: 115]
-    # samtools index aiv_sample_Y.segment_aligned.bam #
-    # bcftools mpileup -Ou -f best_ref_chosen_segment.fa aiv_sample_Y.segment_aligned.bam | bcftools call -mv -Oz -o aiv_sample_Y.segment.vcf.gz # [cite: 116]
-    # bcftools index aiv_sample_Y.segment.vcf.gz #
-    # bcftools consensus -f best_ref_chosen_segment.fa aiv_sample_Y.segment.vcf.gz -o aiv_sample_Y.segment_consensus.fasta # [cite: 116]
-    # Repeat for all 8 segments
-    # Output: Consensus fasta files for each AIV segment
+13. **Functional Annotation (eggNOG):**
+    * Annotate predicted proteins using eggNOG-mapper. Requires downloaded database.
+    ```bash
+    # Input: sample_X.proteins.faa
+    # Ensure EGGNOG_DATA_DIR environment variable is set or use --data_dir
+    emapper.py -i sample_X.proteins.faa -o sample_X_eggnog --output_basename sample_X --cpu 16
+    # Output: Annotation files in sample_X_eggnog/
+    ```
+
+14. **Generate Sequencing Statistics:**
+    * Produce summary statistics for the processed reads.
+    ```bash
+    # Input: sample_X.filtered.fastq
+    NanoStat --fastq sample_X.filtered.fastq --outdir sample_X_nanostat_output -n sample_X_nanostat_report.txt
+    # Output: Reports in sample_X_nanostat_output/
+    ```
+
+15. **Generate Assembly Statistics:**
+    * Produce summary statistics for the final assembly.
+    ```bash
+    # Input: sample_X.polished.fasta
+    assembly-stats sample_X.polished.fasta > sample_X_assembly_stats.txt
+    # Output: sample_X_assembly_stats.txt
     ```
 
 **Notes:**
 
-* Replace placeholders like `/path/to/`, `sample_X`, `aiv_sample_Y`, `<N>`, `<read_count_threshold>`, database paths, and Medaka models with your actual paths, names, desired parameters, and appropriate models for R10.4.1 data.
-* Adjust thread counts (`-t`, `--threads`, `-@`) based on your system's resources.
-* This workflow provides a template based on the provided PDF. Refer to individual tool documentation for detailed usage and optimization.
-* The PDF specifies "Minimap2 v2.28 [ref] and three rounds of Racon v1.5 [ref]" for metaFlye polishing[cite: 91]. Racon typically takes alignments in SAM/BAM format for correction.
-* The PDF specifies that assemblies from metaFlye and nanoMDBG were polished with Medaka v2.0.1[cite: 92].
+* Replace placeholders like `/path/to/`, `sample_X`, `<N>`, `<M>`, database paths, etc., with your actual paths and desired parameters.
+* Adjust thread counts (`-t`, `--threads`, `--cpu`, `-@`) based on your system's resources.
+* This workflow provides a template. You may need to adapt steps, parameters, or tools based on specific research questions and data characteristics.
+* Refer to the individual tool documentation (and potentially guides in `/Functionality` and `/Taxonomy` directories) for detailed usage and optimization.
