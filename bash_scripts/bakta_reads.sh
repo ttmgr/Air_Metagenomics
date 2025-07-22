@@ -1,4 +1,3 @@
-
 # Define the path to the Bakta database
 BAKTA_DB="/path/to/bakta_db/"
 # Define the output directory
