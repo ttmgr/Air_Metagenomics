@@ -2,11 +2,11 @@
 
 This document provides a guide to using the Python script (`metagenomics_analysis.py`) for post-processing and analyzing data from the air microbiome nanopore sequencing pipeline.
 
-## 🧬 Overview
+## Overview
 
 This script provides several functions for data extraction, processing, visualization, and reporting, which can be invoked using specific commands.
 
-## 🛠️ Prerequisites
+## Prerequisites
 
 - Python 3.9+
 - The required Python libraries must be installed. You can install them using pip:
@@ -15,7 +15,7 @@ This script provides several functions for data extraction, processing, visualiz
   ```
 - Your analysis results (e.g., NanoStat reports, Kraken2 reports) and read files (.fastq format) must be available in organized directories.
 
-## 🚀 Script Usage
+## Script Usage
 
 The script is command-line driven and uses sub-commands for different tasks. The general usage pattern is:
 
@@ -121,7 +121,7 @@ python metagenomics_analysis.py create_report \
   --output_file ./FINAL_REPORT.html
 ```
 
-## 📝 Recommended Workflow
+## Recommended Workflow
 
 Here is a recommended order of operations for using these scripts after running the main pipeline:
 
@@ -164,5 +164,3 @@ Here is a recommended order of operations for using these scripts after running 
       --input_dir /path/to/your/project_results/ \
       --output_file FINAL_REPORT.html
     ```
-
-This consolidated script and guide should significantly streamline your data analysis and reporting process.
