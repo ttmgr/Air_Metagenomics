@@ -267,23 +267,6 @@ output_folder/
 └── logs/
 ```
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-## 📄 Citation
-
-If you use this pipeline in your research, please cite:
-
-```bibtex
-@software{nanopore_metagenomics_pipeline,
-  title = {Nanopore Metagenomics Pipeline},
-  author = {Your Name},
-  year = {2024},
-  url = {https://github.com/yourusername/nanopore-metagenomics-pipeline}
-}
-```
-
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -293,9 +276,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Oxford Nanopore Technologies for sequencing technology
 - All tool developers whose software is integrated in this pipeline
 - The metagenomics community for continuous feedback and improvements
-
-## 📞 Support
-
-- 📧 Email: your.email@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/nanopore-metagenomics-pipeline/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/nanopore-metagenomics-pipeline/discussions)
