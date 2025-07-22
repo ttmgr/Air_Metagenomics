@@ -1,215 +1,86 @@
-# Installation Guide for Air Monitoring Nanopore Sequencing Pipeline Tools
+# Installation Guide for the Nanopore Metagenomics Pipeline
 
-This guide provides instructions for installing all the tools used in the Air Monitoring Nanopore Sequencing Pipeline. We'll be using Mamba to create separate environments for each tool, ensuring clean and isolated installations.
+This guide provides streamlined instructions for setting up the necessary software environment and databases to run the entire Air Monitoring Nanopore Sequencing Pipeline.
 
-## Prerequisites
+## 🔬 Overview of the Installation Process
 
-- Mamba (a faster alternative to Conda) should be installed on your system. If not, you can install it using:
+The setup process consists of three main steps:
+
+1.  **Create the Conda Environment**: Use the provided `environment.yaml` file to create a single, unified Conda environment with all the required pipeline tools. This is the recommended and most straightforward method.
+2.  **Install ONT Basecaller (Manual)**: Manually install the appropriate Oxford Nanopore basecaller (Guppy or Dorado), as these are not available through Conda.
+3.  **Download Databases**: Run the provided helper script to download the large databases required for taxonomic classification, functional annotation, and AMR gene detection.
+
+---
+
+## ✅ Prerequisites
+
+Before you begin, ensure you have **Mamba** installed, which is a much faster alternative to Conda for creating environments. If you don't have it, you can install it into your base Conda environment:
 
 ```bash
 conda install mamba -n base -c conda-forge
 ```
 
-## General Installation Process
+---
 
-For each tool, we'll follow these steps:
-1. Create a new Mamba environment
-2. Activate the environment
-3. Install the tool using Mamba
-4. (Optional) Download required databases
+## Step 1: Create the Conda Environment
 
-## Tool Installation Instructions
-
-### 1. Guppy Basecaller
-
-Guppy is typically provided by Oxford Nanopore Technologies and may require a specific installation process. Please refer to the ONT community for the latest installation instructions.
-
-### 2. Porechop
+This is the primary installation step. The `environment.yaml` file will automatically install all the necessary pipeline tools into a single, isolated environment named `nanopore-metagenomics`.
 
 ```bash
-mamba create -n porechop -c bioconda porechop
-mamba activate porechop
+# Navigate to the repository's root directory
+# Create the environment using the provided file
+mamba env create -f env/environment.yaml
 ```
 
-### 3. NanoFilt
+This process will take some time as it downloads and installs numerous bioinformatics packages. Once complete, you can activate the environment at any time using:
 
 ```bash
-mamba create -n nanofilt -c bioconda nanofilt
-mamba activate nanofilt
+mamba activate nanopore-metagenomics
 ```
 
-### 4. Flye
+---
 
-```bash
-mamba create -n flye -c bioconda flye
-mamba activate flye
-```
+## Step 2: Install ONT Basecallers (Manual)
 
-### 5. Minimap2
+The Oxford Nanopore basecallers, **Guppy** (for FAST5 data) and **Dorado** (for POD5 data), must be installed manually. They are not available on Conda.
 
-```bash
-mamba create -n minimap2 -c bioconda minimap2
-mamba activate minimap2
-```
+Please refer to the **ONT Community** for instructions on downloading and installing the correct version for your system's architecture (e.g., Linux/Windows, CPU/GPU).
 
-### 6. Racon
+---
 
-```bash
-mamba create -n racon -c bioconda racon
-mamba activate racon
-```
+## Step 3: Download Databases
 
-### 7. MetaWRAP
+The pipeline requires several large databases. A helper script, `download_databases.sh`, is provided to automate this process.
 
-```bash
-mamba create -n metawrap -c ursky metawrap-mg
-mamba activate metawrap
-```
+1.  **❗️ IMPORTANT ❗️:** First, open the script **`bash_scripts/download_databases.sh`** and edit the `DB_BASE_DIR` variable to the full path where you want to store the databases. This location requires **~400-500 GB** of free space.
 
-### 8. Prodigal
+2.  Run the script. Make sure you have activated the `nanopore-metagenomics` environment first, as it contains some of the required helper tools.
+    ```bash
+    mamba activate nanopore-metagenomics
+    bash bash_scripts/download_databases.sh
+    ```
 
-```bash
-mamba create -n prodigal -c bioconda prodigal
-mamba activate prodigal
-```
+3.  The script will download and set up databases for:
+    * Kraken2
+    * AMRFinderPlus
+    * Bakta
+    * eggNOG-mapper
+    * ABRicate
 
-### 9. EggNOG-mapper
+4.  After the script finishes, it will print the final paths for each database. Copy these paths and update the configuration section at the top of **`bash_scripts/run_pipeline.sh`** to ensure the pipeline can find them.
 
-```bash
-mamba create -n eggnog-mapper -c bioconda eggnog-mapper
-mamba activate eggnog-mapper
-```
+---
 
-Download the EggNOG database:
-```bash
-download_eggnog_data.py
-```
+## 🧰 Key Tools Included in the Environment
 
-### 10. CheckM
+Creating the environment with the `environment.yaml` file provides all the necessary tools for the automated pipeline, including:
 
-```bash
-mamba create -n checkm -c bioconda checkm-genome
-mamba activate checkm
-```
+* **Read Processing**: `Porechop`, `NanoFilt`
+* **Quality Control**: `NanoStat`, `Assembly-stats`
+* **Assembly & Polishing**: `Flye`, `Minimap2`, `Racon`
+* **Binning**: `MetaWRAP`, `MetaBAT2`, `MaxBin2`, `CONCOCT`
+* **Annotation**: `Kraken2`, `Prokka`, `Bakta`, `Prodigal`, `eggNOG-mapper`
+* **AMR Detection**: `ABRicate`, `NCBI-AMRFinderPlus`
+* **Utilities**: `Seqkit`, `Samtools`
 
-Download the CheckM database:
-```bash
-checkm data setRoot /path/to/checkm_data
-checkm download_data -t /path/to/checkm_data
-```
-
-### 11. Kraken2
-
-```bash
-mamba create -n kraken2 -c bioconda kraken2
-mamba activate kraken2
-```
-
-Download the Kraken2 database:
-```bash
-kraken2-build --standard --threads 4 --db /path/to/kraken2_db
-```
-
-### 12. DIAMOND
-
-```bash
-mamba create -n diamond -c bioconda diamond
-mamba activate diamond
-```
-
-Download and format the NCBI nr database:
-```bash
-wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
-gunzip nr.gz
-diamond makedb --in nr -d nr
-```
-
-### 13. ABRicate
-
-```bash
-mamba create -n abricate -c bioconda abricate
-mamba activate abricate
-```
-
-Update the ABRicate databases:
-```bash
-abricate-get_db --setupdb
-```
-
-### 14. NCBI-AMRFinderPlus
-
-```bash
-mamba create -n amrfinder -c bioconda ncbi-amrfinderplus
-mamba activate amrfinder
-```
-
-Update the AMRFinder database:
-```bash
-amrfinder_update --force_update
-```
-
-### 15. PfamScan
-
-```bash
-mamba create -n pfamscan -c bioconda pfam_scan
-mamba activate pfamscan
-```
-
-Download the Pfam database:
-```bash
-wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
-gunzip Pfam-A.hmm.gz
-hmmpress Pfam-A.hmm
-```
-
-### 16. Prokka
-
-```bash
-mamba create -n prokka -c bioconda prokka
-mamba activate prokka
-```
-
-### 17. Bakta
-
-```bash
-mamba create -n bakta -c conda-forge -c bioconda bakta
-mamba activate bakta
-```
-
-Download the Bakta database:
-```bash
-bakta_db download --output /path/to/bakta_db
-```
-
-### 18. NanoStat
-
-```bash
-mamba create -n nanostat -c bioconda nanostat
-mamba activate nanostat
-```
-
-### 19. Assembly-Stats
-
-```bash
-mamba create -n assembly-stats -c bioconda assembly-stats
-mamba activate assembly-stats
-```
-
-## Usage
-
-To use a specific tool, activate its environment before running:
-
-```bash
-mamba activate tool_name
-# Run the tool
-mamba deactivate
-```
-
-Replace `tool_name` with the name of the environment you created for that tool.
-
-## Note
-
-- Always ensure you're using the correct environment for each tool to avoid conflicts.
-- Regularly update your tools and databases to benefit from the latest improvements and data.
-- Some databases are large and may take significant time and storage space to download and process.
-- Adjust the paths in the database download commands according to your system's directory structure.
+With the environment activated and databases configured, you are now ready to run the main pipeline.
