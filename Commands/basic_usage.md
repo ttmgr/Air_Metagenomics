@@ -1,265 +1,301 @@
-# Comprehensive Commands for Air Monitoring Nanopore Sequencing Pipeline
+# Nanopore Metagenomics Pipeline
 
-This document provides a comprehensive list of commands for each tool used in the Air Monitoring by Nanopore Sequencing pipeline, with detailed explanations of the flags and options used.
+A comprehensive bioinformatics pipeline for analyzing environmental microbiome data from air, water, and soil samples using Oxford Nanopore sequencing technology.
 
-## Table of Contents
-1. [Guppy Basecaller](#1-guppy-basecaller)
-2. [Porechop](#2-porechop)
-3. [NanoFilt](#3-nanofilt)
-4. [Flye](#4-flye)
-5. [Minimap2](#5-minimap2)
-6. [Racon](#6-racon)
-7. [MetaWRAP](#7-metawrap)
-8. [Prodigal](#8-prodigal)
-9. [EggNOG-mapper](#9-eggnog-mapper)
-10. [CheckM](#10-checkm)
-11. [Kraken2](#11-kraken2)
-12. [DIAMOND](#12-diamond)
-13. [ABRicate](#13-abricate)
-14. [NCBI-AMRFinderPlus](#14-ncbi-amrfinderplus)
-15. [PfamScan](#15-pfamscan)
-16. [Prokka](#16-prokka)
-17. [Bakta](#17-bakta)
-18. [NanoStat](#18-nanostat)
-19. [Assembly-Stats](#19-assembly-stats)
+## 🔬 Overview
 
-## 1. Guppy Basecaller
-Converts raw electrical signal data from nanopore sequencing into DNA sequences.
+This pipeline provides an end-to-end solution for processing nanopore sequencing data from environmental samples, including:
+- Basecalling and demultiplexing
+- Quality control and filtering
+- Taxonomic classification
+- Functional annotation
+- Antimicrobial resistance (AMR) and virulence factor detection
+- Metagenomic assembly and binning
 
+## 📋 Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Pipeline Structure](#pipeline-structure)
+- [Detailed Documentation](#detailed-documentation)
+- [Citation](#citation)
+- [License](#license)
+
+## ✨ Features
+
+- **Long-read optimized**: Designed specifically for Oxford Nanopore long-read data
+- **Comprehensive analysis**: From raw signals to functional insights
+- **AMR detection**: Multiple tools for antimicrobial resistance gene identification
+- **Taxonomic profiling**: High-resolution microbial community composition
+- **Functional annotation**: Detailed metabolic pathway analysis
+- **Quality control**: Rigorous filtering and validation at each step
+- **Modular design**: Run individual components or the full pipeline
+
+## 🛠️ Requirements
+
+### Core Tools
+- **Dorado** (≥0.5.0) - Basecalling
+- **Porechop** (≥0.2.4) - Adapter removal
+- **NanoFilt** (≥2.8.0) - Read filtering
+- **Flye** (≥2.9) - Metagenomic assembly
+- **Kraken2** (≥2.1.2) - Taxonomic classification
+- **DIAMOND** (≥2.0.15) - Protein alignment
+- **ABRicate** (≥1.0.1) - AMR/virulence screening
+- **AMRFinderPlus** (≥3.11) - AMR gene detection
+- **Prokka** (≥1.14.6) - Genome annotation
+- **eggNOG-mapper** (≥2.1.9) - Functional annotation
+- **PlasmodFinder** - Plasmid identification
+
+### Additional Tools
+- Minimap2 (≥2.24)
+- Samtools (≥1.16)
+- Racon (≥1.5.0)
+- MetaWRAP (≥1.3.2)
+- Prodigal (≥2.6.3)
+- CheckM (≥1.2.2)
+- Bakta (≥1.8.1)
+- NanoStat (≥1.6.0)
+
+### System Requirements
+- Linux operating system (Ubuntu 20.04+ or CentOS 7+)
+- Minimum 64GB RAM (128GB recommended for large datasets)
+- 500GB+ free disk space
+- 16+ CPU cores recommended
+
+## 📦 Installation
+
+### 1. Clone the repository
 ```bash
-guppy_basecaller -i /input/directory -s /output/directory --config configuration.cfg
+git clone https://github.com/yourusername/nanopore-metagenomics-pipeline.git
+cd nanopore-metagenomics-pipeline
 ```
 
-- `-i /input/directory`: Specifies the input directory containing raw signal data (.fast5 files)
-- `-s /output/directory`: Specifies the output directory for basecalled sequences
-- `--config configuration.cfg`: Specifies the configuration file containing model and other settings
-
-## 2. Porechop
-Finds and removes adapters from Oxford Nanopore reads.
-
+### 2. Set up conda environment
 ```bash
-porechop -i input.fastq -o output.fastq
+conda env create -f environment.yml
+conda activate nanopore-metagenomics
 ```
 
-- `-i input.fastq`: Specifies the input FASTQ file containing raw reads
-- `-o output.fastq`: Specifies the output FASTQ file for adapter-trimmed reads
-
-## 3. NanoFilt
-Filters Oxford Nanopore sequencing data based on quality and length.
-
+### 3. Download databases
 ```bash
-gunzip -c input.fastq.gz | NanoFilt -q 9 -l 100 | gzip > output.fastq.gz
+# Download and setup required databases
+bash scripts/setup/download_databases.sh
+
+# This will download:
+# - Kraken2 database
+# - DIAMOND nr database
+# - AMR databases (CARD, ResFinder)
+# - eggNOG database
+# - Bakta database
 ```
 
-- `gunzip -c input.fastq.gz`: Decompresses the input file and writes to standard output
-- `NanoFilt -q 9 -l 100`: Filters reads, keeping those with quality ≥ 9 and length ≥ 100 bases
-- `gzip > output.fastq.gz`: Compresses the filtered output and saves it
-
-## 4. Flye
-De novo assembler for single-molecule sequencing reads, run in 'meta' mode for metagenomic data.
-
+### 4. Configure paths
 ```bash
-flye --meta --nano-raw input.fastq --out-dir output_directory 
+cp config/config_template.yaml config/config.yaml
+# Edit config.yaml with your specific paths
 ```
 
-- `--meta`: Enables metagenomic mode for assembling mixed samples
-- `--nano-raw input.fastq`: Specifies input file of raw Nanopore reads
-- `--out-dir output_directory`: Specifies the output directory for assembly results
+## 🚀 Quick Start
 
-## 5. Minimap2
-Aligns DNA sequences against a large reference database.
-
+### Basic usage
 ```bash
-minimap2 -ax map-ont /path/to/flye/output/assembly.fasta /path/to/nanofilt/output/reads.fastq | samtools sort -o /path/to/minimap2/output/reads.sorted.bam
+# Run the complete pipeline
+bash run_pipeline.sh -i input_folder/ -o output_folder/ -t 24
+
+# Run with custom configuration
+bash run_pipeline.sh -i input_folder/ -o output_folder/ -c config/custom_config.yaml
 ```
 
-- `-ax map-ont`: Sets the alignment mode for Oxford Nanopore reads
-- `/path/to/flye/output/assembly.fasta`: Specifies the reference assembly
-- `/path/to/nanofilt/output/reads.fastq`: Specifies the input reads to align
-- `samtools sort -o /path/to/minimap2/output/reads.sorted.bam`: Sorts the alignment and outputs as a BAM file
-
-## 6. Racon
-Consensus module to correct raw contigs generated by rapid assembly methods.
-
+### Example with test data
 ```bash
-racon /path/to/nanofilt/output/reads.fastq /path/to/minimap2/output/reads.sam /path/to/flye/output/assembly.fasta > /path/to/racon/output/assembly.polished.fasta
+# Download test dataset
+bash scripts/download_test_data.sh
+
+# Run pipeline on test data
+bash run_pipeline.sh -i test_data/ -o test_output/ -t 8
 ```
 
-- First argument: Path to the filtered reads
-- Second argument: Path to the alignment file (SAM format)
-- Third argument: Path to the initial assembly
-- `> /path/to/racon/output/assembly.polished.fasta`: Redirects the polished assembly to an output file
+## 📁 Pipeline Structure
 
-## 7. MetaWRAP
-Modular pipeline for metagenomic analysis, including binning and bin refinement.
-
-### Binning:
-```bash
-metawrap binning -o /output/directory -t 16 -a /input/assembly.fasta --metabat2 --maxbin2 --concoct /input/read_1.fastq /input/read_2.fastq
+```
+nanopore-metagenomics-pipeline/
+├── README.md
+├── LICENSE
+├── environment.yml
+├── run_pipeline.sh
+├── config/
+│   ├── config_template.yaml
+│   └── database_paths.yaml
+├── docs/
+│   ├── installation.md
+│   ├── usage.md
+│   ├── troubleshooting.md
+│   └── tools/
+│       ├── AMR_detection.md
+│       ├── functional_annotation.md
+│       └── taxonomic_classification.md
+├── scripts/
+│   ├── setup/
+│   │   └── download_databases.sh
+│   ├── preprocessing/
+│   │   ├── dorado_basecalling.sh
+│   │   ├── read_processing.sh
+│   │   └── quality_control.sh
+│   ├── assembly/
+│   │   ├── assembly_and_polishing.sh
+│   │   └── metagenomic_binning.sh
+│   ├── annotation/
+│   │   ├── prokka_annotation.sh
+│   │   ├── bakta_annotation.sh
+│   │   ├── prodigal_prediction.sh
+│   │   └── eggnog_mapping.sh
+│   ├── classification/
+│   │   └── kraken2_classification.sh
+│   ├── amr_detection/
+│   │   ├── abricate_screening.sh
+│   │   └── amrfinder_analysis.sh
+│   └── analysis/
+│       ├── extract_metrics.py
+│       ├── generate_plots.py
+│       └── create_report.py
+├── workflows/
+│   ├── preprocessing.nf
+│   ├── assembly.nf
+│   └── annotation.nf
+└── test_data/
+    └── README.md
 ```
 
-- `-o /output/directory`: Specifies the output directory
-- `-t 16`: Sets the number of threads to use
-- `-a /input/assembly.fasta`: Specifies the input assembly file
-- `--metabat2 --maxbin2 --concoct`: Enables these three binning algorithms
-- `/input/read_1.fastq /input/read_2.fastq`: Specifies the input read files
+## 📚 Detailed Documentation
 
-### Bin Refinement:
-```bash
-metawrap bin_refinement -o /output/directory -t 16 -A /input/bin_set1 -B /input/bin_set2 -C /input/bin_set3 -c 70 -x 10
+### 1. [Preprocessing](docs/preprocessing.md)
+- Basecalling with Dorado
+- Demultiplexing
+- Adapter removal with Porechop
+- Quality filtering with NanoFilt
+
+### 2. [Assembly](docs/assembly.md)
+- Metagenomic assembly with Flye
+- Read mapping with Minimap2
+- Polishing with Racon
+- Assembly statistics
+
+### 3. [Taxonomic Classification](docs/tools/taxonomic_classification.md)
+- Read-level classification with Kraken2
+- Contig-level classification
+- Abundance estimation
+- Visualization
+
+### 4. [Functional Annotation](docs/tools/functional_annotation.md)
+- Gene prediction with Prodigal
+- Annotation with Prokka/Bakta
+- Functional mapping with eggNOG-mapper
+- Pathway analysis
+
+### 5. [AMR & Virulence Detection](docs/tools/AMR_detection.md)
+- ABRicate screening
+- AMRFinderPlus analysis
+- Resistance gene quantification
+- Virulence factor identification
+
+### 6. [Metagenomic Binning](docs/binning.md)
+- MetaWRAP binning
+- Bin refinement
+- Quality assessment with CheckM
+
+## 🔧 Configuration
+
+The pipeline behavior can be customized through the `config.yaml` file:
+
+```yaml
+# General settings
+threads: 24
+memory: 128G
+
+# Quality thresholds
+min_read_length: 100
+min_read_quality: 9
+min_contig_length: 1000
+
+# Database paths
+kraken2_db: /path/to/kraken2/db
+diamond_db: /path/to/diamond/db
+eggnog_db: /path/to/eggnog/db
+bakta_db: /path/to/bakta/db
+
+# Tool-specific parameters
+flye:
+  mode: meta
+  min_overlap: 1000
+
+kraken2:
+  confidence: 0.1
+  minimum_hit_groups: 2
 ```
 
-- `-o /output/directory`: Specifies the output directory
-- `-t 16`: Sets the number of threads to use
-- `-A /input/bin_set1 -B /input/bin_set2 -C /input/bin_set3`: Specifies input bin sets from different binning algorithms
-- `-c 70`: Sets the minimum completion threshold to 70%
-- `-x 10`: Sets the maximum contamination threshold to 10%
+## 📊 Output Structure
 
-## 8. Prodigal
-Microbial gene finding program.
-
-```bash
-prodigal -i /path/to/assembly.fasta -a /path/to/proteins.faa -o /path/to/prodigal_output.gbk -p meta
+```
+output_folder/
+├── 01_preprocessing/
+│   ├── basecalled/
+│   ├── demultiplexed/
+│   ├── trimmed/
+│   └── filtered/
+├── 02_assembly/
+│   ├── flye/
+│   ├── minimap2/
+│   └── racon/
+├── 03_classification/
+│   ├── kraken2_reads/
+│   └── kraken2_contigs/
+├── 04_annotation/
+│   ├── prokka/
+│   ├── bakta/
+│   └── eggnog/
+├── 05_amr_detection/
+│   ├── abricate/
+│   └── amrfinder/
+├── 06_binning/
+│   └── metawrap/
+├── 07_analysis/
+│   ├── statistics/
+│   ├── plots/
+│   └── reports/
+└── logs/
 ```
 
-- `-i /path/to/assembly.fasta`: Specifies the input FASTA file
-- `-a /path/to/proteins.faa`: Specifies the output file for protein sequences
-- `-o /path/to/prodigal_output.gbk`: Specifies the output file in Genbank format
-- `-p meta`: Sets the procedure to metagenomic mode
+## 🤝 Contributing
 
-## 9. EggNOG-mapper
-Tool for fast functional annotation of novel sequences.
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-```bash
-emapper.py -i /path/to/proteins.faa -o /path/to/eggnog_output -m diamond --cpu 8 --data_dir /path/to/eggnog_data/
+## 📄 Citation
+
+If you use this pipeline in your research, please cite:
+
+```bibtex
+@software{nanopore_metagenomics_pipeline,
+  title = {Nanopore Metagenomics Pipeline},
+  author = {Your Name},
+  year = {2024},
+  url = {https://github.com/yourusername/nanopore-metagenomics-pipeline}
+}
 ```
 
-- `-i /path/to/proteins.faa`: Specifies the input protein FASTA file
-- `-o /path/to/eggnog_output`: Specifies the output file prefix
-- `-m diamond`: Sets the search method to DIAMOND
-- `--cpu 8`: Sets the number of CPU cores to use
-- `--data_dir /path/to/eggnog_data/`: Specifies the directory containing eggNOG data files
+## 📜 License
 
-## 10. CheckM
-Assesses the quality of genomes recovered from metagenomes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-```bash
-checkm lineage_wf /path/to/bins/ /path/to/checkm_output/
-```
+## 🙏 Acknowledgments
 
-- `lineage_wf`: Specifies the lineage-specific workflow
-- `/path/to/bins/`: Specifies the directory containing genome bins
-- `/path/to/checkm_output/`: Specifies the output directory for CheckM results
+- Oxford Nanopore Technologies for sequencing technology
+- All tool developers whose software is integrated in this pipeline
+- The metagenomics community for continuous feedback and improvements
 
-## 11. Kraken2
-Assigns taxonomic labels to short DNA sequences.
+## 📞 Support
 
-```bash
-kraken2 --db kraken_db_finalized --use-names --report report_samplename.txt --output output_samplename.txt sample.fastq --memory-mapping --threads 24
-```
-
-- `--db kraken_db_finalized`: Specifies the path to the Kraken2 database
-- `--use-names`: Adds taxa names to the output
-- `--report report_samplename.txt`: Specifies the file for the kraken report
-- `--output output_samplename.txt`: Specifies the file for kraken output
-- `sample.fastq`: Specifies the input FASTQ file
-- `--memory-mapping`: Uses memory mapping to load the database, reducing memory usage
-- `--threads 24`: Sets the number of threads to use
-
-## 12. DIAMOND
-Performs fast protein alignments.
-
-```bash
-diamond blastx -d diamond_db -q sample.fastq -o sample_name_blastx.dmnd_out -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore staxids salltitles sscinames
-```
-
-- `blastx`: Specifies the BLASTX-like translated search
-- `-d diamond_db`: Specifies the DIAMOND formatted database file
-- `-q sample.fastq`: Specifies the input query file in FASTQ format
-- `-o sample_name_blastx.dmnd_out`: Specifies the output file
-- `-f 6`: Sets the output format to tabular
-- The remaining parameters specify the fields to include in the output (e.g., query sequence id, subject sequence id, percentage of identical matches, etc.)
-
-## 13. ABRicate
-ABRicate is a tool for mass screening of contigs for antimicrobial resistance or virulence genes.
-
-```bash
-abricate --db card --minid 80 --mincov 80 --out output_file.tab input_assembly.fasta
-```
-
-- `--db card`: Specifies the database to use (CARD in this case, but could be NCBI, ResFinder, etc.)
-- `--minid 80`: Sets the minimum DNA %identity to report a hit (80% in this case)
-- `--mincov 80`: Sets the minimum DNA %coverage to report a hit (80% in this case)
-- `--out output_file.tab`: Specifies the output file name
-- `input_assembly.fasta`: Specifies the input assembly file
-
-## 14. NCBI-AMRFinderPlus
-AMRFinderPlus identifies antimicrobial resistance genes in protein or nucleotide sequences.
-
-```bash
-amrfinder -n input_assembly.fasta -o amrfinder_output.tsv --plus
-```
-
-- `-n input_assembly.fasta`: Specifies the input nucleotide FASTA file
-- `-o amrfinder_output.tsv`: Specifies the output file name
-- `--plus`: Enables the use of AMRFinderPlus, which includes point mutations
-
-## 15. PfamScan
-PfamScan searches protein sequences against the Pfam database of protein families.
-
-```bash
-pfam_scan.pl -fasta input_proteins.fasta -dir /path/to/pfam/database -outfile pfam_output.txt
-```
-
-- `-fasta input_proteins.fasta`: Specifies the input protein FASTA file
-- `-dir /path/to/pfam/database`: Specifies the directory containing Pfam database files
-- `-outfile pfam_output.txt`: Specifies the output file name
-
-## 16. Prokka
-Prokka is a tool for rapid prokaryotic genome annotation.
-
-```bash
-prokka --outdir prokka_output --prefix sample_name --kingdom Bacteria --locustag SAMPLE input_assembly.fasta
-```
-
-- `--outdir prokka_output`: Specifies the output directory
-- `--prefix sample_name`: Sets the prefix for output files
-- `--kingdom Bacteria`: Specifies the kingdom (could also be Archaea)
-- `--locustag SAMPLE`: Sets the locus tag prefix for CDS features
-- `input_assembly.fasta`: Specifies the input assembly file
-
-## 17. Bakta
-Bakta is a tool for the rapid & standardized annotation of bacterial genomes & plasmids.
-
-```bash
-bakta --db /path/to/bakta/db --output bakta_output --prefix sample_name input_assembly.fasta
-```
-
-- `--db /path/to/bakta/db`: Specifies the path to the Bakta database
-- `--output bakta_output`: Specifies the output directory
-- `--prefix sample_name`: Sets the prefix for output files
-- `input_assembly.fasta`: Specifies the input assembly file
-
-## 18. NanoStat
-NanoStat generates statistics for Oxford Nanopore sequencing data.
-
-```bash
-NanoStat --fastq input_reads.fastq --outdir nanostat_output --name sample_name
-```
-
-- `--fastq input_reads.fastq`: Specifies the input FASTQ file
-- `--outdir nanostat_output`: Specifies the output directory
-- `--name sample_name`: Sets the prefix for the output file
-
-## 19. Assembly-Stats
-Assembly-Stats calculates various statistics for genome assemblies.
-
-```bash
-assembly-stats -t input_assembly.fasta > assembly_stats_output.txt
-```
-
-- `-t`: Enables tab-delimited output
-- `input_assembly.fasta`: Specifies the input assembly file
-- `> assembly_stats_output.txt`: Redirects the output to a file
-
-Note: Replace file paths, database locations, and parameter values as needed for your specific setup and data. Consult each tool's documentation for detailed information on available options and best practices.
+- 📧 Email: your.email@example.com
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/nanopore-metagenomics-pipeline/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/nanopore-metagenomics-pipeline/discussions)
