@@ -1,0 +1,244 @@
+# Nanopore Metagenomics Pipeline Configuration
+# Copy this file to config.yaml and adjust paths and parameters
+
+# General Settings
+general:
+  threads: 24
+  memory: "128G"
+  temp_dir: "/tmp"
+  keep_intermediate: false
+  verbose: true
+
+# Sample Information
+samples:
+  # Sample naming pattern (for automatic detection)
+  barcode_pattern: "barcode[0-9]+"
+  # Or specify samples manually:
+  # - barcode01: "Sample_A"
+  # - barcode02: "Sample_B"
+
+# Basecalling Parameters
+basecalling:
+  # Dorado executable path
+  dorado_path: "/path/to/dorado"
+  
+  # Model selection based on flowcell
+  model: "dna_r10.4.1_e8.2_400bps_hac@v4.3.0"
+  
+  # Basecalling options
+  modified_bases: null  # e.g., "5mCG_5hmCG"
+  min_qscore: 7
+  
+  # Kit information
+  kit_name: "SQK-RBK114-24"
+  
+  # Duplex mode
+  duplex:
+    enabled: false
+    threads: 2
+
+# Read Processing Parameters
+preprocessing:
+  # Porechop settings
+  porechop:
+    mode: default
+    
+  # NanoFilt settings
+  quality_filter:
+    min_quality: 9
+    min_length: 100
+    max_length: 50000
+    headcrop: 0
+    tailcrop: 0
+
+# Assembly Parameters
+assembly:
+  # Flye settings
+  flye:
+    mode: "meta"  # Use metagenomic mode
+    type: nano-hq
+    min_overlap: 1000
+    iterations: 1
+    meta_options:
+      # Additional options for metagenomic assembly
+      min_contig_length: 1000
+    
+  # Polishing settings
+  polishing:
+    iterations: 1
+    include_unpolished: false
+    window_size: 500
+
+# Taxonomic Classification
+classification:
+  # Kraken2 settings
+  kraken2:
+    database: "/path/to/kraken2/database"
+    confidence: 0.1
+    minimum_hit_groups: 2
+    report_zero_counts: false
+    memory_mapping: true
+    
+  # DIAMOND settings
+  diamond:
+    database: "/path/to/diamond/nr"
+    sensitivity: "sensitive"
+    max_target_seqs: 25
+    evalue: 1e-5
+    min_identity: 80
+    query_cover: 80
+
+# Functional Annotation
+annotation:
+  # Prokka settings
+  prokka:
+    kingdom: "Bacteria"  # Bacteria, Archaea, Viruses
+    metagenome: true
+    compliant: false
+    addgenes: true
+    
+  # Bakta settings
+  bakta:
+    database: "/path/to/bakta/db"
+    keep_contig_headers: true
+    
+  # Prodigal settings
+  prodigal:
+    mode: "meta"  # Metagenomic mode
+    closed_ends: false
+    
+  # eggNOG-mapper settings
+  eggnog:
+    database: "/path/to/eggnog/data"
+    tax_scope: "auto"
+    target_orthologs: "all"
+    query_cover: 20
+    subject_cover: 20
+
+# AMR Detection
+amr_detection:
+  # ABRicate settings
+  abricate:
+    databases:
+      - "card"
+      - "resfinder"
+      - "ncbi"
+      - "argannot"
+      - "vfdb"
+    min_identity: 80
+    min_coverage: 80
+    
+  # AMRFinderPlus settings
+  amrfinder:
+    database: "/path/to/amrfinderplus/data"
+    plus: true  # Include point mutations
+    name: true  # Report gene names
+    
+  # Custom AMR databases
+  custom_databases: []
+
+# Binning Parameters
+binning:
+  # MetaWRAP settings
+  metawrap:
+    min_contig_length: 1000
+    universal: true
+    
+  # Binning algorithms
+  binners:
+    - "metabat2"
+    - "maxbin2"
+    - "concoct"
+    
+  # Bin refinement
+  refinement:
+    min_completion: 50
+    max_contamination: 10
+    
+  # CheckM settings
+  checkm:
+    reduced_tree: false
+    threads: 8
+
+# Output Settings
+output:
+  # Report generation
+  reports:
+    format: "html"  # html, pdf, both
+    include_raw_data: false
+    
+  # Visualization
+  plots:
+    formats: ["png", "svg"]
+    dpi: 300
+    color_scheme: "viridis"
+    
+  # Data export
+  export:
+    formats: ["csv", "json"]
+    compress: true
+
+# Database Paths (adjust to your installation)
+databases:
+  kraken2: "/path/to/databases/kraken2/standard"
+  diamond: "/path/to/databases/diamond/nr.dmnd"
+  eggnog: "/path/to/databases/eggnog"
+  bakta: "/path/to/databases/bakta/db"
+  amrfinder: "/path/to/databases/amrfinderplus"
+  checkm: "/path/to/databases/checkm"
+  gtdbtk: "/path/to/databases/gtdbtk"
+  card: "/path/to/databases/card"
+  vfdb: "/path/to/databases/vfdb"
+
+# Advanced Settings
+advanced:
+  # Error handling
+  error_handling:
+    stop_on_error: false
+    retry_failed: true
+    max_retries: 3
+    
+  # Resource management
+  resources:
+    max_memory_per_job: "32G"
+    priority: "normal"
+    
+  # Logging
+  logging:
+    level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+    format: "detailed"
+    
+  # Cleanup
+  cleanup:
+    remove_temp: true
+    compress_intermediates: true
+    
+# Environment-specific settings
+environment:
+  # Adjust based on your sequencing environment
+  sample_type: "soil"  # soil, water, air
+  
+  # Expected characteristics
+  expected:
+    genome_size_range: [1000000, 10000000]
+    gc_content_range: [30, 70]
+    
+# Quality metrics thresholds
+quality_thresholds:
+  # Minimum requirements for downstream analysis
+  min_reads_per_sample: 1000
+  min_bases_per_sample: 500000
+  min_mean_read_length: 200
+  min_n50: 1000
+
+# Pipeline behavior
+pipeline:
+  # Continue with warnings
+  strict_mode: false
+  
+  # Checkpoint saving
+  save_checkpoints: true
+  
+  # Parallel execution
+  parallel_samples: true
+  max_parallel_jobs: 4
