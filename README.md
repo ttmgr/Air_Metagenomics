@@ -26,7 +26,7 @@ guppy_basecaller -i /path/to/input/fast5/ -r -s /path/to/output/ --detect_barcod
     * **Processing:** Requires **Dorado** for basecalling and demultiplexing.
 
 ```bash
-dorado basecaller --emit-fastq dna_r10.4.1_e8.2_400bps_hac@v5.0.0 -r /path/to/input/pod5/ > basecalled.fastq --kit-name SQK-RBK114-24
+dorado basecaller dna_r10.4.1_e8.2_400bps_hac@v5.0.0 -r /path/to/input/pod5/ --emit-fastq > basecalled.fastq --kit-name SQK-RBK114-24 --no-trim
 ```
 
 **The main pipeline assumes you have already completed the steps in the relevant guide and have your demultiplexed FASTQ files ready in a single input directory.**
