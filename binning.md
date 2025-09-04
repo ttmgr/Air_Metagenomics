@@ -4,7 +4,6 @@ A reproducible, end-to-end workflow for Oxford Nanopore metagenomes: upstream pr
 
 Assumptions. ONT R9/R10 data, basecalled with Dorado (hac or sup). Assemblies via Flye/metaFlye in metagenome mode. Mapping with minimap2 preset -x map-ont. Prefer Flye --nano-hq for contemporary, high-quality (Q≈20) basecalls; use --meta for metagenomes. Reserve --nano-raw for older, noisier reads.
 
-⸻
 
 ```mermaid
 graph TD
