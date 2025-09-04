@@ -8,17 +8,20 @@ Assumptions. ONT R9/R10 data, basecalled with Dorado (hac or sup). Assemblies vi
 
 ```mermaid
 graph TD
-    A[Raw ONT Signals (POD5/FAST5)] --> B[Basecalling (Dorado)]
-    B --> C[QC & Host Depletion (NanoFilt/Filtlong; minimap2 vs host; optional Kraken2)]
-    C --> D[Assembly (Flye --nano-hq --meta; or Raven)]
-    D --> E[Read Mapping to Contigs (minimap2 -ax map-ont → sorted/indexed BAM)]
-    E --> F1[VAMB (VAE: k-mers + coverage)]
-    E --> F2[COMEBin (multi-view contrastive)]
-    E --> F3[MetaBAT2 (coverage + TNF)]
-    F1 & F2 & F3 --> G[DAS Tool (dereplicate/aggregate/score)]
-    G --> H1[CheckM (lineage_wf)]
-    G --> H2[CheckM2 (ML-based alternative)]
-    H1 & H2 --> I[Taxonomy (GTDB-Tk; optional Kraken2/NT)]
+    A[Raw ONT Signals POD5/FAST5] --> B[Basecalling Dorado]
+    B --> C[QC & Host Depletion NanoFilt/Filtlong; minimap2 vs host; optional Kraken2]
+    C --> D[Assembly Flye --nano-hq --meta; or Raven]
+    D --> E[Read Mapping to Contigs minimap2 -ax map-ont → sorted/indexed BAM]
+    E --> F1[VAMB VAE: k-mers + coverage]
+    E --> F2[COMEBin multi-view contrastive]
+    E --> F3[MetaBAT2 coverage + TNF]
+    F1 --> G[DAS Tool dereplicate/aggregate/score]
+    F2 --> G
+    F3 --> G
+    G --> H1[CheckM lineage_wf]
+    G --> H2[CheckM2 ML-based alternative]
+    H1 --> I[Taxonomy GTDB-Tk; optional Kraken2/NT]
+    H2 --> I
 ```
 
 ⸻
