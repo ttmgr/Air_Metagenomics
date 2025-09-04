@@ -159,16 +159,18 @@ This guide describes how to process and bin nanopore metagenomes with **VAMB**, 
 
 ```mermaid
 flowchart TD
-    A[Raw Nanopore Signals] --> B[Basecalling\\n(Dorado, Guppy)]
-    B --> C[QC & Host Removal\\n(NanoFilt, Filtlong, Kraken2)]
-    C --> D[Assembly\\n(metaFlye, Raven)]
-    D --> E[Read Mapping\\n(minimap2 -> BAM)]
+    A[Raw Nanopore Signals] --> B[Basecalling<br/>Dorado, Guppy]
+    B --> C[QC & Host Removal<br/>NanoFilt, Filtlong, Kraken2]
+    C --> D[Assembly<br/>metaFlye, Raven]
+    D --> E[Read Mapping<br/>minimap2 -> BAM]
     E --> F[VAMB]
     E --> G[COMEBin]
     E --> H[MetaBAT2]
-    F & G & H --> I[DAS Tool\\nRefined Bins]
-    I --> J[CheckM\\nCompleteness & Contamination]
-    J --> K[Classification\\n(GTDB-Tk, Kraken2/NT)]
+    F --> I[DAS Tool<br/>Refined Bins]
+    G --> I
+    H --> I
+    I --> J[CheckM<br/>Completeness & Contamination]
+    J --> K[Classification<br/>GTDB-Tk, Kraken2/NT]
 ```
 
 ## 1. Upstream processing
