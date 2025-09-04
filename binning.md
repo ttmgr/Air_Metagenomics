@@ -7,7 +7,7 @@ Assumptions. ONT R9/R10 data, basecalled with Dorado (hac or sup). Assemblies vi
 ⸻
 
 ```mermaid
-flowchart TD
+graph TD
     A[Raw ONT Signals (POD5/FAST5)] --> B[Basecalling (Dorado)]
     B --> C[QC & Host Depletion (NanoFilt/Filtlong; minimap2 vs host; optional Kraken2)]
     C --> D[Assembly (Flye --nano-hq --meta; or Raven)]
