@@ -41,7 +41,7 @@ conda config --add channels defaults
 
 ### 1.1 Basecalling (Dorado)
 
-Dorado writes BAM to stdout by default; use `--emit-fastq` to emit FASTQ. Select a model (fast, hac, or sup) and point to your POD5/FAST5 location. Use GPU with `-x cuda:0`.
+Dorado writes BAM to stdout by default; use `--emit-fastq` to emit FASTQ. Select a model (fast, hac, or sup) and point to your POD5/FAST5 location.
 
 ```bash
 # Basecall to FASTQ (GPU, SUP model)
